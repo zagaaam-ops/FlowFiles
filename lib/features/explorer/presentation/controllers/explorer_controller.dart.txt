@@ -1,25 +1,41 @@
 import '../../domain/entities/directory_entity.dart';
 import '../../domain/usecases/load_directory_usecase.dart';
+import '../state/explorer_state.dart';
 
 /// Controls the Explorer feature.
 ///
-/// This controller coordinates communication between
-/// the UI and the domain layer.
+/// Responsible for:
+/// - Loading directories
+/// - Managing loading state
+/// - Managing errors
 class ExplorerController {
   ExplorerController(this._loadDirectoryUseCase);
 
   final LoadDirectoryUseCase _loadDirectoryUseCase;
 
-  DirectoryEntity? _currentDirectory;
+  ExplorerState _state = const ExplorerState();
 
-  /// Currently opened directory.
-  DirectoryEntity? get currentDirectory => _currentDirectory;
+  ExplorerState get state => _state;
 
-  /// Loads a directory.
   Future<void> openDirectory(String path) async {
-    _currentDirectory = await _loadDirectoryUseCase(path);
-  }
+    _state = _state.copyWith(
+      isLoading: true,
+      errorMessage: null,
+    );
 
-  /// Returns true when a directory has been loaded.
-  bool get hasDirectory => _currentDirectory != null;
+    try {
+      final DirectoryEntity directory =
+          await _loadDirectoryUseCase(path);
+
+      _state = _state.copyWith(
+        directory: directory,
+        isLoading: false,
+      );
+    } catch (e) {
+      _state = _state.copyWith(
+        isLoading: false,
+        errorMessage: e.toString(),
+      );
+    }
+  }
 }
