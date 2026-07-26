@@ -28,4 +28,8 @@ abstract class ExplorerRepository {
 
   /// Returns true if the directory exists.
   Future<bool> directoryExists(String path);
-}
+}/// Moves files/directories from [sourcePaths] into [destinationPath].
+  Future<void> moveFiles({
+    required List<String> sourcePaths,
+    required String destinationPath,
+  });
