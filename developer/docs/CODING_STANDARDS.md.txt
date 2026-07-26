@@ -1,0 +1,330 @@
+# FlowFiles Coding Standards
+
+Version: 0.1
+
+---
+
+# Purpose
+
+This document defines the coding standards for the FlowFiles project.
+
+All contributors are expected to follow these guidelines to ensure code quality, consistency, maintainability, and readability.
+
+---
+
+# Core Principles
+
+- Keep code simple.
+- Prefer readability over cleverness.
+- Write self-documenting code.
+- Follow SOLID principles.
+- Follow Clean Architecture.
+- Write reusable components.
+- Keep functions small.
+- Keep widgets focused on one responsibility.
+
+---
+
+# Clean Architecture
+
+Every feature should follow this structure.
+
+```
+feature/
+
+├── data/
+
+├── domain/
+
+├── presentation/
+```
+
+---
+
+# Layer Responsibilities
+
+## Domain
+
+Contains:
+
+- Entities
+- Repository Interfaces
+- Use Cases
+
+Rules
+
+- No Flutter imports
+- No dart:io
+- Platform independent
+
+---
+
+## Data
+
+Contains
+
+- Models
+- Repositories
+- Data Sources
+- Mappers
+
+---
+
+## Presentation
+
+Contains
+
+- Widgets
+- Pages
+- Providers
+- State
+
+Business logic should not be placed inside widgets.
+
+---
+
+# Naming Convention
+
+## Classes
+
+Use PascalCase.
+
+Example
+
+```
+ExplorerRepository
+OrganizerEngine
+MoveFilesUseCase
+```
+
+---
+
+## Variables
+
+Use camelCase.
+
+```
+currentFolder
+selectedFiles
+destinationPath
+```
+
+---
+
+## Constants
+
+Use lowerCamelCase.
+
+```
+defaultAnimationDuration
+maxSelectionCount
+```
+
+---
+
+## Files
+
+Use snake_case.
+
+```
+explorer_repository.dart
+
+move_files_usecase.dart
+
+folder_tile.dart
+```
+
+---
+
+# Folder Structure
+
+Every feature should use:
+
+```
+feature/
+
+data/
+
+domain/
+
+presentation/
+```
+
+---
+
+# Widget Guidelines
+
+Widgets should:
+
+- Be reusable.
+- Have one responsibility.
+- Avoid business logic.
+- Prefer composition over inheritance.
+
+---
+
+# State Management
+
+FlowFiles uses Riverpod.
+
+Rules
+
+- Avoid global mutable state.
+- Use providers for dependencies.
+- Keep providers focused.
+
+---
+
+# Error Handling
+
+Do not ignore exceptions.
+
+Always:
+
+- Catch expected errors.
+- Log unexpected errors.
+- Show meaningful user messages.
+
+---
+
+# Documentation
+
+Public classes should include Dart documentation comments.
+
+Example
+
+```dart
+/// Loads files from a directory.
+class LoadDirectoryUseCase {}
+```
+
+---
+
+# Imports
+
+Import order
+
+1. Dart SDK
+2. Flutter packages
+3. Third-party packages
+4. Project imports
+
+Example
+
+```dart
+import 'dart:io';
+
+import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../repositories/explorer_repository.dart';
+```
+
+---
+
+# Formatting
+
+Use
+
+```
+dart format
+```
+
+Never manually align spaces.
+
+---
+
+# Testing
+
+Every new feature should include:
+
+- Unit tests
+- Widget tests (where applicable)
+
+Bug fixes should include regression tests when practical.
+
+---
+
+# Git Commit Messages
+
+Use descriptive commit messages.
+
+Examples
+
+```
+Add Explorer repository
+
+Implement Organizer selection
+
+Fix folder navigation
+
+Refactor state management
+```
+
+---
+
+# Pull Requests
+
+Each Pull Request should:
+
+- Solve one logical problem.
+- Include a clear description.
+- Pass all automated checks.
+- Be reviewed before merging.
+
+---
+
+# Performance
+
+Prefer:
+
+- Lazy loading
+- Efficient list rendering
+- Immutable objects
+- Background processing for heavy operations
+
+Avoid:
+
+- Unnecessary rebuilds
+- Large synchronous operations
+- Duplicate computations
+
+---
+
+# Accessibility
+
+UI should support:
+
+- Keyboard navigation
+- Screen readers
+- High contrast themes
+- Responsive layouts
+
+---
+
+# Cross-Platform Support
+
+Avoid platform-specific code in shared layers.
+
+Use abstraction through the platform layer.
+
+---
+
+# Code Review Checklist
+
+Before submitting code:
+
+- [ ] Code compiles
+- [ ] No analyzer warnings
+- [ ] Tests pass
+- [ ] Documentation updated
+- [ ] Naming follows standards
+- [ ] No unused code
+- [ ] No commented-out code
+- [ ] Performance considered
+
+---
+
+Version
+
+0.1
