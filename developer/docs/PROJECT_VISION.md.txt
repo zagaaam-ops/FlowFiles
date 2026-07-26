@@ -1,0 +1,129 @@
+# FlowFiles
+
+## Project Vision
+
+FlowFiles is a cross-platform, open-source file organizer designed to dramatically reduce the time and effort required to organize large numbers of files.
+
+Unlike traditional file managers that focus primarily on browsing files, FlowFiles is built around a workflow-first philosophy. The application minimizes unnecessary navigation, reduces repetitive user interactions, and enables rapid organization of thousands of files with minimal clicks or taps.
+
+---
+
+# Mission
+
+Create the fastest file organization experience available on any desktop or mobile platform.
+
+---
+
+# Core Philosophy
+
+Traditional file managers are optimized for browsing.
+
+FlowFiles is optimized for organizing.
+
+Every feature should support one or more of these goals:
+
+- Reduce user interaction.
+- Reduce navigation.
+- Reduce unnecessary confirmations.
+- Preserve user context.
+- Increase organization speed.
+- Support keyboard, mouse, touch, and drag-and-drop workflows.
+
+---
+
+# Primary Goals
+
+- Cross-platform support
+- Open Source (MIT License)
+- High performance
+- Modern Material Design 3 interface
+- Clean Architecture
+- Offline-first
+- Privacy-focused
+- Fast startup
+- Low memory usage
+- Large directory support
+
+---
+
+# Target Platforms
+
+- Windows
+- Linux
+- macOS
+- Android
+- iOS
+- Web (where supported)
+
+---
+
+# Key Features
+
+## Organizer Mode
+
+Single tap selects files.
+
+Selecting a destination folder immediately moves the selected files while keeping the user in the current source directory.
+
+No unnecessary navigation.
+
+---
+
+## Split View
+
+Source files remain visible while destination folders are permanently available in a second panel.
+
+---
+
+## Drag and Drop
+
+Drag one or multiple files directly onto destination folders.
+
+---
+
+## Undo
+
+Allow users to revert the last move operation.
+
+---
+
+## Recent Destinations
+
+Frequently used folders should be immediately accessible.
+
+---
+
+## Favorites
+
+Users can pin frequently used folders.
+
+---
+
+# Design Principles
+
+- Simplicity
+- Speed
+- Reliability
+- Accessibility
+- Cross-platform consistency
+- Minimal distractions
+
+---
+
+# Long-Term Vision
+
+Become the preferred open-source file organization tool for users who regularly organize large collections of files, including photographers, engineers, students, researchers, businesses, and power users.
+
+---
+
+# Open Source
+
+FlowFiles welcomes community contributions.
+
+The project aims to maintain a clean architecture, comprehensive documentation, and a friendly contributor experience.
+
+---
+
+Version
+
+0.1 Draft
