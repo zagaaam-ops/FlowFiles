@@ -1,3 +1,4 @@
+import '../../../../app/di/service_locator.dart';
 import 'package:flutter/material.dart';
 
 import '../../domain/entities/file_entity.dart';
