@@ -3,32 +3,28 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../domain/usecases/load_directory_usecase.dart';
 import '../state/explorer_state.dart';
 
-class ExplorerNotifier
-    extends StateNotifier<ExplorerState> {
-  ExplorerNotifier(
-    this.loadDirectory,
-  ) : super(const ExplorerState());
+class ExplorerNotifier extends StateNotifier<ExplorerState> {
+  ExplorerNotifier(this._loadDirectory)
+      : super(const ExplorerState());
 
-  final LoadDirectoryUseCase loadDirectory;
+  final LoadDirectoryUseCase _loadDirectory;
 
   Future<void> openFolder(String path) async {
     state = state.copyWith(
-      status: ExplorerStatus.loading,
-      currentPath: path,
+      isLoading: true,
+      errorMessage: null,
     );
 
     try {
-      final result = await loadDirectory(path);
+      final directory = await _loadDirectory(path);
 
       state = state.copyWith(
-        status: result.isEmpty
-            ? ExplorerStatus.empty
-            : ExplorerStatus.loaded,
-        content: result,
+        directory: directory,
+        isLoading: false,
       );
     } catch (e) {
       state = state.copyWith(
-        status: ExplorerStatus.error,
+        isLoading: false,
         errorMessage: e.toString(),
       );
     }
