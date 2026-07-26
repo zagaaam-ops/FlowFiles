@@ -1,0 +1,213 @@
+# Contributing to FlowFiles
+
+Thank you for your interest in contributing to FlowFiles!
+
+FlowFiles is an open-source, cross-platform file organizer focused on providing the fastest possible workflow for organizing files.
+
+We welcome bug reports, feature requests, documentation improvements, code contributions, UI suggestions, and performance optimizations.
+
+---
+
+# Code of Conduct
+
+Please be respectful and professional.
+
+Constructive discussions and collaboration are encouraged.
+
+---
+
+# Before You Start
+
+Please read:
+
+- PROJECT_VISION.md
+- ARCHITECTURE.md
+- ROADMAP.md
+- CODING_STANDARDS.md
+
+Understanding these documents will help ensure your contributions align with the project's goals.
+
+---
+
+# Development Workflow
+
+1. Fork the repository.
+2. Create a feature branch.
+3. Make your changes.
+4. Test your changes.
+5. Update documentation if necessary.
+6. Submit a Pull Request.
+
+---
+
+# Branch Naming
+
+Examples
+
+feature/explorer-engine
+
+feature/organizer-mode
+
+feature/move-engine
+
+bugfix/folder-navigation
+
+bugfix/file-selection
+
+docs/update-roadmap
+
+refactor/repository-layer
+
+---
+
+# Commit Message Format
+
+Examples
+
+Add Explorer Engine
+
+Implement Organizer Mode
+
+Improve file loading performance
+
+Fix drag and drop bug
+
+Update documentation
+
+Avoid generic commit messages such as:
+
+Update
+
+Fix
+
+Changes
+
+Work
+
+---
+
+# Pull Request Guidelines
+
+Each Pull Request should:
+
+- Solve one logical problem.
+- Include a clear description.
+- Reference related issues when applicable.
+- Follow the coding standards.
+- Pass all automated checks.
+- Avoid unrelated changes.
+
+---
+
+# Coding Guidelines
+
+Please follow:
+
+- Clean Architecture
+- SOLID Principles
+- Riverpod state management
+- Material Design 3
+- Null Safety
+- dart format
+
+---
+
+# Testing
+
+Before submitting code:
+
+- Ensure the project builds successfully.
+- Run unit tests.
+- Run widget tests if applicable.
+- Verify existing functionality is not broken.
+
+---
+
+# Documentation
+
+If your contribution changes behavior or introduces a new feature:
+
+- Update the relevant documentation.
+- Add comments where appropriate.
+- Keep examples current.
+
+---
+
+# Reporting Bugs
+
+Please include:
+
+- Operating system
+- App version
+- Steps to reproduce
+- Expected behavior
+- Actual behavior
+- Screenshots (if applicable)
+- Log output (if available)
+
+---
+
+# Feature Requests
+
+When suggesting a feature, please describe:
+
+- The problem it solves
+- The proposed solution
+- Alternative approaches
+- Possible limitations
+
+Remember that FlowFiles is designed around fast file organization. Features that improve workflow, reduce navigation, or increase productivity are especially valuable.
+
+---
+
+# Performance
+
+Performance is a primary goal of this project.
+
+Contributors should avoid:
+
+- Blocking the UI thread
+- Unnecessary rebuilds
+- Excessive memory usage
+- Duplicate file scans
+
+---
+
+# Accessibility
+
+All new UI should consider:
+
+- Keyboard navigation
+- Screen readers
+- Responsive layouts
+- High-contrast themes
+
+---
+
+# Project Principles
+
+Every contribution should support one or more of these principles:
+
+- Workflow before features.
+- Cross-platform by design.
+- Performance matters.
+- Quality over quantity.
+- Simplicity over complexity.
+- Documentation is part of the feature.
+- Backward compatibility when practical.
+
+---
+
+# Recognition
+
+Every contributor who helps improve FlowFiles is appreciated.
+
+Whether you submit code, documentation, bug reports, or ideas, your contribution helps make the project better for everyone.
+
+Thank you for contributing!
+
+---
+
+Version
+
+0.1
