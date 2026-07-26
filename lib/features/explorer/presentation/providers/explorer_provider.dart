@@ -10,7 +10,7 @@ final explorerProvider =
     StateNotifierProvider<
         ExplorerNotifier,
         ExplorerState>((ref) {
-  final repository = ExplorerRepositoryImpl(LocalFileSystemDataSource())
+final repository = ExplorerRepositoryImpl(LocalFileSystemDataSource());
 
   return ExplorerNotifier(
     LoadDirectoryUseCase(repository),
