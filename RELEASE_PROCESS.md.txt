@@ -1,0 +1,236 @@
+# FlowFiles Release Process
+
+Version: 1.0
+
+---
+
+# Purpose
+
+This document defines how FlowFiles versions are planned, tested, released, and maintained.
+
+The objective is to ensure every release is stable, documented, and easy to track.
+
+---
+
+# Versioning
+
+FlowFiles follows Semantic Versioning.
+
+Format:
+
+MAJOR.MINOR.PATCH
+
+Example:
+
+1.0.0
+
+Where:
+
+MAJOR = Breaking changes
+
+MINOR = New features
+
+PATCH = Bug fixes
+
+Examples:
+
+0.1.0
+
+0.2.0
+
+0.3.5
+
+1.0.0
+
+1.1.0
+
+2.0.0
+
+---
+
+# Development Stages
+
+Planning
+
+↓
+
+Development
+
+↓
+
+Testing
+
+↓
+
+Release Candidate
+
+↓
+
+Stable Release
+
+↓
+
+Maintenance
+
+---
+
+# Branch Strategy
+
+main
+
+Contains stable production releases only.
+
+develop
+
+Contains completed features waiting for release.
+
+feature/*
+
+Used for developing individual features.
+
+Examples
+
+feature/explorer-engine
+
+feature/organizer-mode
+
+feature/move-engine
+
+feature/search
+
+hotfix/*
+
+Emergency production fixes.
+
+Examples
+
+hotfix/crash-on-startup
+
+hotfix/file-move-error
+
+---
+
+# Release Cycle
+
+Every release should include:
+
+- Completed features
+- Updated documentation
+- Updated CHANGELOG
+- Passing automated tests
+- Updated screenshots if UI changed
+
+---
+
+# Release Checklist
+
+Before publishing a release:
+
+- Application builds successfully
+- Analyzer reports no errors
+- Unit tests pass
+- Widget tests pass
+- Documentation updated
+- CHANGELOG updated
+- Version number updated
+- Release notes prepared
+
+---
+
+# GitHub Releases
+
+Each release should include:
+
+Version number
+
+Release date
+
+New features
+
+Bug fixes
+
+Known issues
+
+Screenshots (if applicable)
+
+Migration notes (if applicable)
+
+---
+
+# Pre-release Versions
+
+Alpha
+
+Internal development.
+
+Beta
+
+Public testing.
+
+Release Candidate (RC)
+
+Feature complete.
+
+Stable
+
+Production ready.
+
+Example:
+
+0.8.0-alpha
+
+0.8.0-beta
+
+0.8.0-rc1
+
+1.0.0
+
+---
+
+# Changelog
+
+Every release must update CHANGELOG.md.
+
+Entries should include:
+
+Added
+
+Changed
+
+Fixed
+
+Removed
+
+Deprecated
+
+Security
+
+---
+
+# Long-Term Support
+
+Only the latest stable version will receive regular updates.
+
+Critical security fixes may be backported when appropriate.
+
+---
+
+# Future Automation
+
+GitHub Actions
+
+Automatic testing
+
+Automatic version tagging
+
+Automatic release creation
+
+Automatic documentation deployment
+
+Dependency updates
+
+---
+
+# Goal
+
+Every FlowFiles release should be predictable, reproducible, and professionally documented.
