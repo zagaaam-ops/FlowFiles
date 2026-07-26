@@ -11,7 +11,6 @@ final explorerProvider =
         ExplorerNotifier,
         ExplorerState>((ref) {
   final repository = ExplorerRepositoryImpl(LocalFileSystemDataSource())
-  );
 
   return ExplorerNotifier(
     LoadDirectoryUseCase(repository),
