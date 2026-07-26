@@ -1,26 +1,37 @@
 import '../../domain/entities/directory_entity.dart';
 
-/// Represents the current UI state of the Explorer.
+enum ExplorerStatus {
+  initial,
+  loading,
+  loaded,
+  empty,
+  error,
+}
+
 class ExplorerState {
   const ExplorerState({
-    this.directory,
-    this.isLoading = false,
+    this.status = ExplorerStatus.initial,
+    this.currentPath = '',
+    this.content,
     this.errorMessage,
   });
 
-  final DirectoryEntity? directory;
-  final bool isLoading;
+  final ExplorerStatus status;
+  final String currentPath;
+  final DirectoryEntity? content;
   final String? errorMessage;
 
   ExplorerState copyWith({
-    DirectoryEntity? directory,
-    bool? isLoading,
+    ExplorerStatus? status,
+    String? currentPath,
+    DirectoryEntity? content,
     String? errorMessage,
   }) {
     return ExplorerState(
-      directory: directory ?? this.directory,
-      isLoading: isLoading ?? this.isLoading,
-      errorMessage: errorMessage,
+      status: status ?? this.status,
+      currentPath: currentPath ?? this.currentPath,
+      content: content ?? this.content,
+      errorMessage: errorMessage ?? this.errorMessage,
     );
   }
 }
