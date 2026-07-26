@@ -1,0 +1,25 @@
+import '../../domain/entities/directory_entity.dart';
+import '../../domain/usecases/load_directory_usecase.dart';
+
+/// Controls the Explorer feature.
+///
+/// This controller coordinates communication between
+/// the UI and the domain layer.
+class ExplorerController {
+  ExplorerController(this._loadDirectoryUseCase);
+
+  final LoadDirectoryUseCase _loadDirectoryUseCase;
+
+  DirectoryEntity? _currentDirectory;
+
+  /// Currently opened directory.
+  DirectoryEntity? get currentDirectory => _currentDirectory;
+
+  /// Loads a directory.
+  Future<void> openDirectory(String path) async {
+    _currentDirectory = await _loadDirectoryUseCase(path);
+  }
+
+  /// Returns true when a directory has been loaded.
+  bool get hasDirectory => _currentDirectory != null;
+}
