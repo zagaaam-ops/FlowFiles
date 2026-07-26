@@ -1,64 +1,33 @@
 import 'file_entity.dart';
 
-/// Represents a directory and its contents.
-///
-/// This entity is used by the Explorer Engine to describe the
-/// currently opened folder and everything needed to display it.
-///
-/// It is immutable and belongs to the domain layer.
+/// Represents the contents of a directory that has been loaded
+/// from the file system.
 class DirectoryEntity {
-  /// Creates a new [DirectoryEntity].
   const DirectoryEntity({
     required this.path,
     required this.name,
     required this.parentPath,
-    required this.items,
+    this.items = const [],
   });
 
-  /// Absolute path of the directory.
   final String path;
-
-  /// Directory name.
   final String name;
-
-  /// Parent directory path.
-  ///
-  /// Root folders may return an empty string.
   final String parentPath;
-
-  /// Files and folders inside this directory.
   final List<FileEntity> items;
 
-  /// Total number of items.
-  int get itemCount => items.length;
-
-  /// Returns only folders.
-  List<FileEntity> get directories =>
-      items.where((item) => item.isDirectory).toList();
-
-  /// Returns only files.
-  List<FileEntity> get files =>
-      items.where((item) => item.isFile).toList();
-
-  /// Returns true if this directory has no content.
   bool get isEmpty => items.isEmpty;
 
-  @override
-  String toString() {
-    return 'DirectoryEntity('
-        'name: $name, '
-        'path: $path, '
-        'items: ${items.length}'
-        ')';
+  DirectoryEntity copyWith({
+    String? path,
+    String? name,
+    String? parentPath,
+    List<FileEntity>? items,
+  }) {
+    return DirectoryEntity(
+      path: path ?? this.path,
+      name: name ?? this.name,
+      parentPath: parentPath ?? this.parentPath,
+      items: items ?? this.items,
+    );
   }
-
-  @override
-  bool operator ==(Object other) =>
-      identical(this, other) ||
-      other is DirectoryEntity &&
-          runtimeType == other.runtimeType &&
-          path == other.path;
-
-  @override
-  int get hashCode => path.hashCode;
 }
