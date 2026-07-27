@@ -1,79 +1,118 @@
-# FlowFiles
+# 🚀 FlowFiles
 
-> Workflow-first, cross-platform file organizer designed for speed.
+**FlowFiles** is a modern cross-platform desktop file organization application built with Flutter.
 
-FlowFiles is an open-source file organizer focused on one goal:
-
-**Organize thousands of files with the fewest possible clicks or taps.**
-
-Unlike traditional file managers that prioritize browsing, FlowFiles is designed to maximize productivity by reducing unnecessary navigation and repetitive actions.
+It helps users organize files quickly by browsing folders, selecting files, and moving them into categorized destinations with a clean, intuitive interface.
 
 ---
 
-## Why FlowFiles?
+## ✨ Features
 
-Traditional file managers usually:
+### Current
+- Clean Architecture
+- Flutter Desktop
+- Riverpod State Management
+- Repository Pattern
+- Cross-platform structure
 
-- Open the destination folder after every move.
-- Require repeated navigation between folders.
-- Slow down users working with hundreds or thousands of files.
-
-FlowFiles introduces a workflow optimized for rapid file organization.
-
----
-
-## Planned Features
-
-- Organizer Mode
-- Split View Interface
-- Drag & Drop
-- Undo Last Move
-- Recent Destinations
-- Favorite Folders
-- Fast File Navigation
-- Cross-Platform Support
+### Planned
+- 📂 File Explorer
+- 📁 Folder Navigation
+- 🗂 Multi-file Selection
+- 🚚 Copy / Move Engine
+- 🔍 Search
+- ⭐ Favorites
+- 👁 File Preview
+- 🌙 Dark Mode
 
 ---
 
-## Supported Platforms
+## 🖥 Supported Platforms
 
 - Windows
 - Linux
 - macOS
-- Android
-- iOS
-- Web (where supported)
 
 ---
 
-## Development Status
+## 🏗 Architecture
 
-Current Version:
+FlowFiles follows **Clean Architecture**.
 
-**v0.1 (In Development)**
+```
+Presentation
+     │
+Domain
+     │
+Data
+```
+
+Project structure:
+
+```
+lib/
+ ├── app/
+ ├── core/
+ ├── features/
+ │     ├── explorer/
+ │     ├── organizer/
+ │     ├── preview/
+ │     ├── search/
+ │     └── settings/
+ └── shared/
+```
 
 ---
 
-## Documentation
+## 🛠 Built With
 
-Project documentation is available in the `developer/docs` folder.
-
-- Project Vision
-- Architecture
-- Roadmap
-- Coding Standards
-- Contributing Guide
+- Flutter
+- Dart
+- Riverpod
+- Clean Architecture
 
 ---
 
-## License
+## 🚀 Getting Started
+
+```bash
+flutter pub get
+flutter analyze
+flutter run
+```
+
+---
+
+## 📅 Roadmap
+
+### v0.1.0
+- Stable Architecture ✅
+
+### v0.2.0
+- File Explorer 🚧
+
+### v0.3.0
+- Organizer Engine
+
+### v0.4.0
+- Search & Preview
+
+### v1.0.0
+- Production Release
+
+---
+
+## 👨‍💻 Author
+
+**Rana Muhammad Zagham Ali**
+
+PMP | Civil Work Senior Engineer | Zain KSA
+
+GitHub:
+https://github.com/zagaaam-ops
+
+---
+
+## 📄 License
 
 MIT License
-
----
-
-## Contributing
-
-Contributions, bug reports, feature requests, and documentation improvements are welcome.
-
-Please read the Contributing Guide before submitting changes.
