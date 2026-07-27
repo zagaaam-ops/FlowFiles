@@ -52,6 +52,7 @@ class _ExplorerPageState extends State<ExplorerPage> {
           children: [
             ExplorerToolbar(
               currentPath: state.directory?.path ?? '',
+              currentSort: state.sortOption,
               onHome: () {
                 controller.openDirectory(
                   PathUtils.getHomeDirectory(),
@@ -73,6 +74,9 @@ class _ExplorerPageState extends State<ExplorerPage> {
               },
               onNavigate: (path) {
                 controller.openDirectory(path);
+              },
+              onSortChanged: (option) {
+                controller.setSortOption(option);
               },
             ),
             Expanded(
