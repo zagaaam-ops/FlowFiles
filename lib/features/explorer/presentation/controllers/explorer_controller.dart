@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 
+import '../../../../core/utils/file_sort_utils.dart';
 import '../../domain/entities/directory_entity.dart';
 import '../../domain/usecases/load_directory_usecase.dart';
 import '../state/explorer_state.dart';
@@ -10,6 +11,7 @@ import '../state/explorer_state.dart';
 /// - Loading directories
 /// - Managing loading state
 /// - Managing errors
+/// - Applying sorting
 class ExplorerController extends ChangeNotifier {
   ExplorerController(this._loadDirectoryUseCase);
 
@@ -31,14 +33,52 @@ class ExplorerController extends ChangeNotifier {
       final DirectoryEntity directory =
           await _loadDirectoryUseCase(path);
 
+      final sortedItems = FileSortUtils.sort(
+        directory.items,
+        _state.sortOption,
+      );
+
+      final sortedDirectory = DirectoryEntity(
+        path: directory.path,
+        name: directory.name,
+        parentPath: directory.parentPath,
+        items: sortedItems,
+      );
+
       _state = _state.copyWith(
-        directory: directory,
+        directory: sortedDirectory,
         isLoading: false,
       );
     } catch (e) {
       _state = _state.copyWith(
         isLoading: false,
         errorMessage: e.toString(),
+      );
+    }
+
+    notifyListeners();
+  }
+
+  void setSortOption(sortOption) {
+    _state = _state.copyWith(
+      sortOption: sortOption,
+    );
+
+    final directory = _state.directory;
+
+    if (directory != null) {
+      final sortedItems = FileSortUtils.sort(
+        directory.items,
+        sortOption,
+      );
+
+      _state = _state.copyWith(
+        directory: DirectoryEntity(
+          path: directory.path,
+          name: directory.name,
+          parentPath: directory.parentPath,
+          items: sortedItems,
+        ),
       );
     }
 
