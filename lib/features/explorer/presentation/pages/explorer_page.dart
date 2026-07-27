@@ -56,12 +56,12 @@ class _ExplorerPageState extends State<ExplorerPage> {
       body: SafeArea(
         child: Column(
           children: [
-ExplorerToolbar(
-  currentPath: state.directory?.path ?? '',
-  currentSort: state.sortOption,
-  searchQuery: state.searchQuery,
-  selectedCount: selectionController.selectedCount,
-  onHome: () {
+            ExplorerToolbar(
+              currentPath: state.directory?.path ?? '',
+              currentSort: state.sortOption,
+              searchQuery: state.searchQuery,
+              selectedCount: selectionController.selectedCount,
+              onHome: () {
                 controller.openDirectory(
                   PathUtils.getHomeDirectory(),
                 );
