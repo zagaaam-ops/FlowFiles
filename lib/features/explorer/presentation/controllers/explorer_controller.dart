@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 import '../../domain/entities/directory_entity.dart';
 import '../../domain/usecases/load_directory_usecase.dart';
 import '../state/explorer_state.dart';
@@ -8,7 +10,7 @@ import '../state/explorer_state.dart';
 /// - Loading directories
 /// - Managing loading state
 /// - Managing errors
-class ExplorerController {
+class ExplorerController extends ChangeNotifier {
   ExplorerController(this._loadDirectoryUseCase);
 
   final LoadDirectoryUseCase _loadDirectoryUseCase;
@@ -22,6 +24,8 @@ class ExplorerController {
       isLoading: true,
       errorMessage: null,
     );
+
+    notifyListeners();
 
     try {
       final DirectoryEntity directory =
@@ -37,5 +41,7 @@ class ExplorerController {
         errorMessage: e.toString(),
       );
     }
+
+    notifyListeners();
   }
 }
