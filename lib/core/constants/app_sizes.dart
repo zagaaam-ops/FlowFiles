@@ -3,6 +3,7 @@
 ///
 /// Standard spacing used across the application.
 /// =============================================================
+library;
 
 class AppSizes {
   AppSizes._();

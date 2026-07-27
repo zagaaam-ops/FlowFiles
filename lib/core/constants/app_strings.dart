@@ -8,6 +8,7 @@
 /// Central location for all user-visible text.
 /// This helps with future localization and consistency.
 /// =============================================================
+library;
 
 class AppStrings {
   AppStrings._();

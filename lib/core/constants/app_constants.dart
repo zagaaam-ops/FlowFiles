@@ -3,6 +3,7 @@
 ///
 /// Application Constants
 /// =============================================================
+library;
 
 class AppConstants {
   AppConstants._();

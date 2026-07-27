@@ -1,0 +1,17 @@
+Analyzing FlowFiles...                                          
+
+  error • Missing concrete implementation of 'ExplorerRepository.moveFiles'. Try implementing the missing method, or make the class abstract • lib/features/explorer/data/repositories/explorer_repository_impl.dart:11:7 • non_abstract_class_inherits_abstract_member
+  error • The named parameter 'status' isn't defined. Try correcting the name to an existing named parameter's name, or defining a named parameter with the name 'status' • lib/features/explorer/presentation/providers/explorer_notifier.dart:16:7 • undefined_named_parameter
+  error • Undefined name 'ExplorerStatus'. Try correcting the name to one that is defined, or defining the name • lib/features/explorer/presentation/providers/explorer_notifier.dart:16:15 • undefined_identifier
+  error • The named parameter 'currentPath' isn't defined. Try correcting the name to an existing named parameter's name, or defining a named parameter with the name 'currentPath' • lib/features/explorer/presentation/providers/explorer_notifier.dart:17:7 • undefined_named_parameter
+  error • The named parameter 'status' isn't defined. Try correcting the name to an existing named parameter's name, or defining a named parameter with the name 'status' • lib/features/explorer/presentation/providers/explorer_notifier.dart:24:9 • undefined_named_parameter
+  error • Undefined name 'ExplorerStatus'. Try correcting the name to one that is defined, or defining the name • lib/features/explorer/presentation/providers/explorer_notifier.dart:25:15 • undefined_identifier
+  error • Undefined name 'ExplorerStatus'. Try correcting the name to one that is defined, or defining the name • lib/features/explorer/presentation/providers/explorer_notifier.dart:26:15 • undefined_identifier
+  error • The named parameter 'content' isn't defined. Try correcting the name to an existing named parameter's name, or defining a named parameter with the name 'content' • lib/features/explorer/presentation/providers/explorer_notifier.dart:27:9 • undefined_named_parameter
+  error • The named parameter 'status' isn't defined. Try correcting the name to an existing named parameter's name, or defining a named parameter with the name 'status' • lib/features/explorer/presentation/providers/explorer_notifier.dart:31:9 • undefined_named_parameter
+  error • Undefined name 'ExplorerStatus'. Try correcting the name to one that is defined, or defining the name • lib/features/explorer/presentation/providers/explorer_notifier.dart:31:17 • undefined_identifier
+  error • The argument type 'FileSystemDataSource' can't be assigned to the parameter type 'LocalFileSystemDataSource'.  • lib/features/explorer/presentation/providers/explorer_provider.dart:14:5 • argument_type_not_assignable
+  error • The name 'SelectionState' isn't a type, so it can't be used as a type argument. Try correcting the name to an existing type, or defining a type named 'SelectionState' • lib/features/organizer/presentation/providers/selection_provider.dart:6:46 • non_type_as_type_argument
+  error • Target of URI doesn't exist: 'features/explorer/presentation/pages/explorer_page.dart'. Try creating the file referenced by the URI, or try using a URI for a file that does exist • lib/main.dart:3:8 • uri_does_not_exist
+  error • The name 'ExplorerPage' isn't a class. Try correcting the name to match an existing class • lib/main.dart:20:19 • creation_with_non_type
+
