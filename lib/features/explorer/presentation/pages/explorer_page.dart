@@ -1,3 +1,4 @@
+import '../../../../core/utils/path_utils.dart';
 import 'package:flutter/material.dart';
 
 import '../../../../app/di/service_locator.dart';
