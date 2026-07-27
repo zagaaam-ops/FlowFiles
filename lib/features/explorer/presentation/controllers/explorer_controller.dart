@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 
+import '../../../../core/enums/sort_option.dart';
 import '../../../../core/utils/file_sort_utils.dart';
 import '../../domain/entities/directory_entity.dart';
 import '../../domain/usecases/load_directory_usecase.dart';
@@ -59,7 +60,7 @@ class ExplorerController extends ChangeNotifier {
     notifyListeners();
   }
 
-  void setSortOption(sortOption) {
+  void setSortOption(SortOption sortOption) {
     _state = _state.copyWith(
       sortOption: sortOption,
     );
