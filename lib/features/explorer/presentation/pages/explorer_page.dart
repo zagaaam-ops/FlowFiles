@@ -121,6 +121,7 @@ class _ExplorerPageState extends State<ExplorerPage> {
                       if (item.isDirectory) {
                         return FolderTile(
                           folder: item,
+                          selected: selectionController.isSelected(item.path),
                           onTap: () {
                             selectionController.toggleSelection(item.path);
                           },
@@ -129,6 +130,7 @@ class _ExplorerPageState extends State<ExplorerPage> {
 
                       return FileTile(
                         file: item,
+                        selected: selectionController.isSelected(item.path),
                         onTap: () {
                           selectionController.toggleSelection(item.path);
                         },
