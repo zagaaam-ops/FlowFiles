@@ -168,13 +168,13 @@ void _handleKeyEvent(KeyEvent event) {
                         final item = items[index];
 
                         if (item.isDirectory) {
-                          return FolderTile(
-                            folder: item,
-                            selected: selectionController.isSelected(item.path),
-                            onTap: () {
-                              selectionController.toggleSelection(item.path);
-                            },
-                          );
+                        return FolderTile(
+  folder: item,
+  selected: selectionController.isSelected(item.path),
+  onTap: () {
+    _handleItemTap(item.path);
+  },
+);
                         }
 
                         return FileTile(
