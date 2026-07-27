@@ -8,7 +8,14 @@ class SelectionController extends ChangeNotifier {
 
   SelectionState get state => _state;
 
-  /// Selects or deselects a path.
+  bool isSelected(String path) {
+    return _state.isSelected(path);
+  }
+
+  int get selectedCount => _state.count;
+
+  bool get hasSelection => _state.isNotEmpty;
+
   void toggleSelection(String path) {
     final selected = Set<String>.from(_state.selectedPaths);
 
@@ -25,17 +32,28 @@ class SelectionController extends ChangeNotifier {
     notifyListeners();
   }
 
-  /// Clears the current selection.
-  void clearSelection() {
-    _state = const SelectionState();
+  /// Select one item only.
+  void selectOnly(String path) {
+    _state = SelectionState(
+      selectedPaths: {path},
+    );
+
     notifyListeners();
   }
 
-  /// Returns true if the path is selected.
-  bool isSelected(String path) {
-    return _state.isSelected(path);
+  /// Clear all selected items.
+  void clearSelection() {
+    _state = const SelectionState();
+
+    notifyListeners();
   }
 
-  /// Number of selected items.
-  int get selectedCount => _state.count;
+  /// Select all items.
+  void selectAll(Iterable<String> paths) {
+    _state = SelectionState(
+      selectedPaths: paths.toSet(),
+    );
+
+    notifyListeners();
+  }
 }
