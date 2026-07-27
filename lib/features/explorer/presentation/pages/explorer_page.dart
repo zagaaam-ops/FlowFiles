@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import '../../../../app/di/service_locator.dart';
 import '../../../../core/utils/path_utils.dart';
@@ -20,7 +21,6 @@ class _ExplorerPageState extends State<ExplorerPage> {
   late final ExplorerController controller;
   late final SelectionController selectionController;
 
-  /// Receives keyboard focus for the Explorer.
   final FocusNode _focusNode = FocusNode();
 
   @override
@@ -37,7 +37,6 @@ class _ExplorerPageState extends State<ExplorerPage> {
       PathUtils.getHomeDirectory(),
     );
 
-    // Automatically focus the Explorer after it appears.
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
         _focusNode.requestFocus();
@@ -59,15 +58,26 @@ class _ExplorerPageState extends State<ExplorerPage> {
     super.dispose();
   }
 
+  void _handleKeyEvent(KeyEvent event) {
+    if (event is! KeyDownEvent) {
+      return;
+    }
+
+    if (event.logicalKey == LogicalKeyboardKey.escape) {
+      selectionController.clearSelection();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final state = controller.state;
 
     return Scaffold(
       body: SafeArea(
-        child: Focus(
+        child: KeyboardListener(
           focusNode: _focusNode,
           autofocus: true,
+          onKeyEvent: _handleKeyEvent,
           child: Column(
             children: [
               ExplorerToolbar(
