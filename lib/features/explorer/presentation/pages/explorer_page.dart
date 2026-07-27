@@ -61,7 +61,7 @@ ExplorerToolbar(
   currentSort: state.sortOption,
   searchQuery: state.searchQuery,
   selectedCount: selectionController.selectedCount,
-              onHome: () {
+  onHome: () {
                 controller.openDirectory(
                   PathUtils.getHomeDirectory(),
                 );
