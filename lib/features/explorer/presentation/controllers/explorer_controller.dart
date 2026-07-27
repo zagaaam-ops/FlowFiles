@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 
 import '../../../../core/enums/sort_option.dart';
+import '../../../../core/utils/file_search_utils.dart';
 import '../../../../core/utils/file_sort_utils.dart';
 import '../../domain/entities/directory_entity.dart';
 import '../../domain/usecases/load_directory_usecase.dart';
@@ -13,6 +14,7 @@ import '../state/explorer_state.dart';
 /// - Managing loading state
 /// - Managing errors
 /// - Applying sorting
+/// - Applying search filtering
 class ExplorerController extends ChangeNotifier {
   ExplorerController(this._loadDirectoryUseCase);
 
@@ -31,23 +33,10 @@ class ExplorerController extends ChangeNotifier {
     notifyListeners();
 
     try {
-      final DirectoryEntity directory =
-          await _loadDirectoryUseCase(path);
-
-      final sortedItems = FileSortUtils.sort(
-        directory.items,
-        _state.sortOption,
-      );
-
-      final sortedDirectory = DirectoryEntity(
-        path: directory.path,
-        name: directory.name,
-        parentPath: directory.parentPath,
-        items: sortedItems,
-      );
+      final directory = await _loadDirectoryUseCase(path);
 
       _state = _state.copyWith(
-        directory: sortedDirectory,
+        directory: _processDirectory(directory),
         isLoading: false,
       );
     } catch (e) {
@@ -68,21 +57,48 @@ class ExplorerController extends ChangeNotifier {
     final directory = _state.directory;
 
     if (directory != null) {
-      final sortedItems = FileSortUtils.sort(
-        directory.items,
-        sortOption,
-      );
-
       _state = _state.copyWith(
-        directory: DirectoryEntity(
-          path: directory.path,
-          name: directory.name,
-          parentPath: directory.parentPath,
-          items: sortedItems,
-        ),
+        directory: _processDirectory(directory),
       );
     }
 
     notifyListeners();
+  }
+
+  void setSearchQuery(String query) {
+    _state = _state.copyWith(
+      searchQuery: query,
+    );
+
+    final directory = _state.directory;
+
+    if (directory != null) {
+      _state = _state.copyWith(
+        directory: _processDirectory(directory),
+      );
+    }
+
+    notifyListeners();
+  }
+
+  DirectoryEntity _processDirectory(
+    DirectoryEntity directory,
+  ) {
+    final sortedItems = FileSortUtils.sort(
+      directory.items,
+      _state.sortOption,
+    );
+
+    final filteredItems = FileSearchUtils.filter(
+      sortedItems,
+      _state.searchQuery,
+    );
+
+    return DirectoryEntity(
+      path: directory.path,
+      name: directory.name,
+      parentPath: directory.parentPath,
+      items: filteredItems,
+    );
   }
 }
