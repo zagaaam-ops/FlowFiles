@@ -8,15 +8,18 @@ class ExplorerToolbar extends StatelessWidget {
     super.key,
     required this.currentPath,
     required this.currentSort,
+    required this.searchQuery,
     this.onHome,
     this.onUp,
     this.onRefresh,
     this.onNavigate,
     this.onSortChanged,
+    this.onSearchChanged,
   });
 
   final String currentPath;
   final SortOption currentSort;
+  final String searchQuery;
 
   final VoidCallback? onHome;
   final VoidCallback? onUp;
@@ -24,6 +27,7 @@ class ExplorerToolbar extends StatelessWidget {
 
   final ValueChanged<String>? onNavigate;
   final ValueChanged<SortOption>? onSortChanged;
+  final ValueChanged<String>? onSearchChanged;
 
   @override
   Widget build(BuildContext context) {
@@ -31,10 +35,7 @@ class ExplorerToolbar extends StatelessWidget {
       elevation: 2,
       color: Theme.of(context).colorScheme.surface,
       child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 12,
-          vertical: 8,
-        ),
+        padding: const EdgeInsets.all(12),
         child: Column(
           children: [
             Row(
@@ -56,7 +57,6 @@ class ExplorerToolbar extends StatelessWidget {
                 ),
                 const Spacer(),
                 PopupMenuButton<SortOption>(
-                  tooltip: 'Sort',
                   initialValue: currentSort,
                   onSelected: onSortChanged,
                   itemBuilder: (context) => const [
@@ -100,6 +100,19 @@ class ExplorerToolbar extends StatelessWidget {
             BreadcrumbBar(
               path: currentPath,
               onSegmentTap: onNavigate,
+            ),
+            const SizedBox(height: 12),
+            TextField(
+              controller: TextEditingController(text: searchQuery)
+                ..selection = TextSelection.fromPosition(
+                  TextPosition(offset: searchQuery.length),
+                ),
+              decoration: const InputDecoration(
+                prefixIcon: Icon(Icons.search),
+                hintText: 'Search files and folders...',
+                border: OutlineInputBorder(),
+              ),
+              onChanged: onSearchChanged,
             ),
           ],
         ),
