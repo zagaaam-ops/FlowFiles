@@ -71,6 +71,9 @@ class _ExplorerPageState extends State<ExplorerPage> {
                   controller.openDirectory(path);
                 }
               },
+              onNavigate: (path) {
+                controller.openDirectory(path);
+              },
             ),
             Expanded(
               child: Builder(
@@ -83,9 +86,7 @@ class _ExplorerPageState extends State<ExplorerPage> {
 
                   if (state.errorMessage != null) {
                     return Center(
-                      child: Text(
-                        state.errorMessage!,
-                      ),
+                      child: Text(state.errorMessage!),
                     );
                   }
 
@@ -94,9 +95,7 @@ class _ExplorerPageState extends State<ExplorerPage> {
 
                   if (items.isEmpty) {
                     return const Center(
-                      child: Text(
-                        'This folder is empty.',
-                      ),
+                      child: Text('This folder is empty.'),
                     );
                   }
 
