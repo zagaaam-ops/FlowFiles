@@ -58,15 +58,30 @@ class _ExplorerPageState extends State<ExplorerPage> {
     super.dispose();
   }
 
-  void _handleKeyEvent(KeyEvent event) {
-    if (event is! KeyDownEvent) {
-      return;
-    }
-
-    if (event.logicalKey == LogicalKeyboardKey.escape) {
-      selectionController.clearSelection();
-    }
+void _handleKeyEvent(KeyEvent event) {
+  if (event is! KeyDownEvent) {
+    return;
   }
+
+  // ESC clears the current selection.
+  if (event.logicalKey == LogicalKeyboardKey.escape) {
+    selectionController.clearSelection();
+    return;
+  }
+
+  // Ctrl + A selects every item in the current folder.
+  final bool isCtrlPressed =
+      HardwareKeyboard.instance.isControlPressed;
+
+  if (isCtrlPressed &&
+      event.logicalKey == LogicalKeyboardKey.keyA) {
+    final items = controller.state.directory?.items ?? <FileEntity>[];
+
+    selectionController.selectAll(
+      items.map((item) => item.path),
+    );
+  }
+}
 
   @override
   Widget build(BuildContext context) {
