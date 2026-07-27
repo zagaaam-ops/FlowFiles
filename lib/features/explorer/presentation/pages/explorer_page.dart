@@ -53,6 +53,7 @@ class _ExplorerPageState extends State<ExplorerPage> {
             ExplorerToolbar(
               currentPath: state.directory?.path ?? '',
               currentSort: state.sortOption,
+              searchQuery: state.searchQuery,
               onHome: () {
                 controller.openDirectory(
                   PathUtils.getHomeDirectory(),
@@ -77,6 +78,9 @@ class _ExplorerPageState extends State<ExplorerPage> {
               },
               onSortChanged: (option) {
                 controller.setSortOption(option);
+              },
+              onSearchChanged: (query) {
+                controller.setSearchQuery(query);
               },
             ),
             Expanded(
