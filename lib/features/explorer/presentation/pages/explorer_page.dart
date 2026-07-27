@@ -59,7 +59,16 @@ class _ExplorerPageState extends State<ExplorerPage> {
   }
 
 void _handleKeyEvent(KeyEvent event) {
-  if (event is! KeyDownEvent) {
+  void _handleItemTap(String path) {
+  final bool isCtrlPressed =
+      HardwareKeyboard.instance.isControlPressed;
+
+  if (isCtrlPressed) {
+    selectionController.toggleSelection(path);
+  } else {
+    selectionController.selectOnly(path);
+  }
+}if (event is! KeyDownEvent) {
     return;
   }
 
