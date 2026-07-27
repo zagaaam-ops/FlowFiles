@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../../../core/enums/sort_option.dart';
 import 'breadcrumb_bar.dart';
 
-class ExplorerToolbar extends StatelessWidget {
+class ExplorerToolbar extends StatefulWidget {
   const ExplorerToolbar({
     super.key,
     required this.currentPath,
@@ -30,6 +30,43 @@ class ExplorerToolbar extends StatelessWidget {
   final ValueChanged<String>? onSearchChanged;
 
   @override
+  State<ExplorerToolbar> createState() => _ExplorerToolbarState();
+}
+
+class _ExplorerToolbarState extends State<ExplorerToolbar> {
+  late final TextEditingController _searchController;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _searchController = TextEditingController(
+      text: widget.searchQuery,
+    );
+  }
+
+  @override
+  void didUpdateWidget(covariant ExplorerToolbar oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (widget.searchQuery != _searchController.text) {
+      _searchController.text = widget.searchQuery;
+
+      _searchController.selection = TextSelection.fromPosition(
+        TextPosition(
+          offset: _searchController.text.length,
+        ),
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Material(
       elevation: 2,
@@ -42,23 +79,23 @@ class ExplorerToolbar extends StatelessWidget {
               children: [
                 IconButton(
                   tooltip: 'Home',
-                  onPressed: onHome,
+                  onPressed: widget.onHome,
                   icon: const Icon(Icons.home),
                 ),
                 IconButton(
                   tooltip: 'Up',
-                  onPressed: onUp,
+                  onPressed: widget.onUp,
                   icon: const Icon(Icons.arrow_upward),
                 ),
                 IconButton(
                   tooltip: 'Refresh',
-                  onPressed: onRefresh,
+                  onPressed: widget.onRefresh,
                   icon: const Icon(Icons.refresh),
                 ),
                 const Spacer(),
                 PopupMenuButton<SortOption>(
-                  initialValue: currentSort,
-                  onSelected: onSortChanged,
+                  initialValue: widget.currentSort,
+                  onSelected: widget.onSortChanged,
                   itemBuilder: (context) => const [
                     PopupMenuItem(
                       value: SortOption.nameAscending,
@@ -98,21 +135,18 @@ class ExplorerToolbar extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             BreadcrumbBar(
-              path: currentPath,
-              onSegmentTap: onNavigate,
+              path: widget.currentPath,
+              onSegmentTap: widget.onNavigate,
             ),
             const SizedBox(height: 12),
             TextField(
-              controller: TextEditingController(text: searchQuery)
-                ..selection = TextSelection.fromPosition(
-                  TextPosition(offset: searchQuery.length),
-                ),
+              controller: _searchController,
               decoration: const InputDecoration(
                 prefixIcon: Icon(Icons.search),
                 hintText: 'Search files and folders...',
                 border: OutlineInputBorder(),
               ),
-              onChanged: onSearchChanged,
+              onChanged: widget.onSearchChanged,
             ),
           ],
         ),
