@@ -9,6 +9,7 @@ class ExplorerToolbar extends StatefulWidget {
     required this.currentPath,
     required this.currentSort,
     required this.searchQuery,
+    required this.selectedCount,
     this.onHome,
     this.onUp,
     this.onRefresh,
@@ -20,6 +21,7 @@ class ExplorerToolbar extends StatefulWidget {
   final String currentPath;
   final SortOption currentSort;
   final String searchQuery;
+  final int selectedCount;
 
   final VoidCallback? onHome;
   final VoidCallback? onUp;
@@ -68,6 +70,12 @@ class _ExplorerToolbarState extends State<ExplorerToolbar> {
 
   @override
   Widget build(BuildContext context) {
+    final title = widget.selectedCount == 0
+        ? 'FlowFiles'
+        : widget.selectedCount == 1
+            ? '1 item selected'
+            : '${widget.selectedCount} items selected';
+
     return Material(
       elevation: 2,
       color: Theme.of(context).colorScheme.surface,
@@ -77,6 +85,11 @@ class _ExplorerToolbarState extends State<ExplorerToolbar> {
           children: [
             Row(
               children: [
+                Text(
+                  title,
+                  style: Theme.of(context).textTheme.titleLarge,
+                ),
+                const Spacer(),
                 IconButton(
                   tooltip: 'Home',
                   onPressed: widget.onHome,
@@ -92,7 +105,6 @@ class _ExplorerToolbarState extends State<ExplorerToolbar> {
                   onPressed: widget.onRefresh,
                   icon: const Icon(Icons.refresh),
                 ),
-                const Spacer(),
                 PopupMenuButton<SortOption>(
                   initialValue: widget.currentSort,
                   onSelected: widget.onSortChanged,
