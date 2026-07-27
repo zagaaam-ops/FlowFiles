@@ -2,6 +2,7 @@ import '../../features/explorer/data/datasources/local_file_system_data_source.d
 import '../../features/explorer/data/repositories/explorer_repository_impl.dart';
 import '../../features/explorer/domain/usecases/load_directory_usecase.dart';
 import '../../features/explorer/presentation/controllers/explorer_controller.dart';
+import '../../features/explorer/presentation/controllers/selection_controller.dart';
 
 /// Simple dependency container for FlowFiles.
 ///
@@ -21,4 +22,7 @@ class ServiceLocator {
 
   static final ExplorerController explorerController =
       ExplorerController(_loadDirectoryUseCase);
+
+  static final SelectionController selectionController =
+      SelectionController();
 }
