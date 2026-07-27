@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../../../../core/utils/file_icon_utils.dart';
 import '../../domain/entities/file_entity.dart';
 
-/// Displays a single file in the Explorer.
 class FileTile extends StatelessWidget {
   const FileTile({
     super.key,
@@ -16,12 +16,17 @@ class FileTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      leading: const Icon(Icons.insert_drive_file_outlined),
+      leading: Icon(
+        FileIconUtils.getIcon(
+          isDirectory: false,
+          extension: file.extension,
+        ),
+      ),
       title: Text(file.name),
       subtitle: Text(
         '${file.size} bytes',
       ),
-      trailing: Text(file.extension.toUpperCase()),
+      trailing: const Icon(Icons.chevron_right),
       onTap: onTap,
     );
   }
