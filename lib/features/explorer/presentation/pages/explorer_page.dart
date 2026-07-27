@@ -4,6 +4,7 @@ import '../../../../app/di/service_locator.dart';
 import '../../../../core/utils/path_utils.dart';
 import '../../domain/entities/file_entity.dart';
 import '../controllers/explorer_controller.dart';
+import '../controllers/selection_controller.dart';
 import '../widgets/explorer_toolbar.dart';
 import '../widgets/file_tile.dart';
 import '../widgets/folder_tile.dart';
@@ -17,13 +18,17 @@ class ExplorerPage extends StatefulWidget {
 
 class _ExplorerPageState extends State<ExplorerPage> {
   late final ExplorerController controller;
+  late final SelectionController selectionController;
 
   @override
   void initState() {
     super.initState();
 
     controller = ServiceLocator.explorerController;
+    selectionController = ServiceLocator.selectionController;
+
     controller.addListener(_refresh);
+    selectionController.addListener(_refresh);
 
     controller.openDirectory(
       PathUtils.getHomeDirectory(),
@@ -39,6 +44,7 @@ class _ExplorerPageState extends State<ExplorerPage> {
   @override
   void dispose() {
     controller.removeListener(_refresh);
+    selectionController.removeListener(_refresh);
     super.dispose();
   }
 
@@ -116,14 +122,16 @@ class _ExplorerPageState extends State<ExplorerPage> {
                         return FolderTile(
                           folder: item,
                           onTap: () {
-                            controller.openDirectory(item.path);
+                            selectionController.toggleSelection(item.path);
                           },
                         );
                       }
 
                       return FileTile(
                         file: item,
-                        onTap: () {},
+                        onTap: () {
+                          selectionController.toggleSelection(item.path);
+                        },
                       );
                     },
                   );
