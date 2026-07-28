@@ -58,7 +58,7 @@ class _ExplorerPageState extends State<ExplorerPage> {
     super.dispose();
   }
 
-  /// Handles mouse/touch clicks on items.
+  /// Handles mouse/touch clicks.
   void _handleItemTap(String path) {
     final bool isCtrlPressed =
         HardwareKeyboard.instance.isControlPressed;
@@ -76,13 +76,11 @@ class _ExplorerPageState extends State<ExplorerPage> {
       return;
     }
 
-    // ESC → Clear selection
     if (event.logicalKey == LogicalKeyboardKey.escape) {
       selectionController.clearSelection();
       return;
     }
 
-    // Ctrl + A → Select all
     final bool isCtrlPressed =
         HardwareKeyboard.instance.isControlPressed;
 
@@ -96,7 +94,6 @@ class _ExplorerPageState extends State<ExplorerPage> {
       );
     }
   }
-
   @override
   Widget build(BuildContext context) {
     final state = controller.state;
