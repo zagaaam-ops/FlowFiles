@@ -58,39 +58,44 @@ class _ExplorerPageState extends State<ExplorerPage> {
     super.dispose();
   }
 
-void _handleKeyEvent(KeyEvent event) {
+  /// Handles mouse/touch clicks on items.
   void _handleItemTap(String path) {
-  final bool isCtrlPressed =
-      HardwareKeyboard.instance.isControlPressed;
+    final bool isCtrlPressed =
+        HardwareKeyboard.instance.isControlPressed;
 
-  if (isCtrlPressed) {
-    selectionController.toggleSelection(path);
-  } else {
-    selectionController.selectOnly(path);
-  }
-}if (event is! KeyDownEvent) {
-    return;
+    if (isCtrlPressed) {
+      selectionController.toggleSelection(path);
+    } else {
+      selectionController.selectOnly(path);
+    }
   }
 
-  // ESC clears the current selection.
-  if (event.logicalKey == LogicalKeyboardKey.escape) {
-    selectionController.clearSelection();
-    return;
+  /// Handles keyboard shortcuts.
+  void _handleKeyEvent(KeyEvent event) {
+    if (event is! KeyDownEvent) {
+      return;
+    }
+
+    // ESC → Clear selection
+    if (event.logicalKey == LogicalKeyboardKey.escape) {
+      selectionController.clearSelection();
+      return;
+    }
+
+    // Ctrl + A → Select all
+    final bool isCtrlPressed =
+        HardwareKeyboard.instance.isControlPressed;
+
+    if (isCtrlPressed &&
+        event.logicalKey == LogicalKeyboardKey.keyA) {
+      final items =
+          controller.state.directory?.items ?? <FileEntity>[];
+
+      selectionController.selectAll(
+        items.map((item) => item.path),
+      );
+    }
   }
-
-  // Ctrl + A selects every item in the current folder.
-  final bool isCtrlPressed =
-      HardwareKeyboard.instance.isControlPressed;
-
-  if (isCtrlPressed &&
-      event.logicalKey == LogicalKeyboardKey.keyA) {
-    final items = controller.state.directory?.items ?? <FileEntity>[];
-
-    selectionController.selectAll(
-      items.map((item) => item.path),
-    );
-  }
-}
 
   @override
   Widget build(BuildContext context) {
@@ -168,20 +173,20 @@ void _handleKeyEvent(KeyEvent event) {
                         final item = items[index];
 
                         if (item.isDirectory) {
-                        return FolderTile(
-  folder: item,
-  selected: selectionController.isSelected(item.path),
-  onTap: () {
-    _handleItemTap(item.path);
-  },
-);
+                          return FolderTile(
+                            folder: item,
+                            selected: selectionController.isSelected(item.path),
+                            onTap: () {
+                              _handleItemTap(item.path);
+                            },
+                          );
                         }
 
                         return FileTile(
                           file: item,
                           selected: selectionController.isSelected(item.path),
                           onTap: () {
-                            selectionController.toggleSelection(item.path);
+                            _handleItemTap(item.path);
                           },
                         );
                       },
