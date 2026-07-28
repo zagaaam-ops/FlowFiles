@@ -179,9 +179,13 @@ class _ExplorerPageState extends State<ExplorerPage> {
                           );
                         }
 
-                        return FileTile(
-                     _handleItemTap(item.path);
-},
+                      return FileTile(
+  file: item,
+  selected: selectionController.isSelected(item.path),
+  onTap: () {
+    _handleItemTap(item.path);
+  },
+);
                           },
                         );
                       },
