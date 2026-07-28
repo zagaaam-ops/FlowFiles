@@ -24,9 +24,7 @@ class FileTile extends StatelessWidget {
         horizontal: 8,
         vertical: 3,
       ),
-      color: selected
-          ? colorScheme.primaryContainer
-          : null,
+      color: selected ? colorScheme.primaryContainer : null,
       child: ListTile(
         leading: Icon(
           FileIconUtils.getIcon(

@@ -8,6 +8,9 @@ class SelectionController extends ChangeNotifier {
 
   SelectionState get state => _state;
 
+  /// Returns all selected file/folder paths.
+  List<String> get selectedPaths => _state.selectedPaths.toList();
+
   bool isSelected(String path) {
     return _state.isSelected(path);
   }
