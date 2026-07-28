@@ -165,32 +165,30 @@ class _ExplorerPageState extends State<ExplorerPage> {
                     }
 
                     return ListView.builder(
-                      itemCount: items.length,
-                      itemBuilder: (context, index) {
-                        final item = items[index];
+  itemCount: items.length,
+  itemBuilder: (context, index) {
+    final item = items[index];
 
-                        if (item.isDirectory) {
-                          return FolderTile(
-                            folder: item,
-                            selected: selectionController.isSelected(item.path),
-                            onTap: () {
-                              _handleItemTap(item.path);
-                            },
-                          );
-                        }
+    if (item.isDirectory) {
+      return FolderTile(
+        folder: item,
+        selected: selectionController.isSelected(item.path),
+        onTap: () {
+          _handleItemTap(item.path);
+        },
+      );
+    }
 
-                      return FileTile(
-  file: item,
-  selected: selectionController.isSelected(item.path),
-  onTap: () {
-    _handleItemTap(item.path);
+    return FileTile(
+      file: item,
+      selected: selectionController.isSelected(item.path),
+      onTap: () {
+        _handleItemTap(item.path);
+      },
+    );
   },
 );
-                          },
-                        );
-                      },
-                    );
-                  },
+                         },
                 ),
               ),
             ],
