@@ -8,6 +8,7 @@ import '../controllers/explorer_controller.dart';
 import '../controllers/selection_controller.dart';
 import '../widgets/explorer_toolbar.dart';
 import '../widgets/file_tile.dart';
+import '../widgets/explorer_context_menu.dart';
 import '../widgets/folder_tile.dart';
 
 class ExplorerPage extends StatefulWidget {
@@ -173,6 +174,16 @@ class _ExplorerPageState extends State<ExplorerPage> {
                             selected: selectionController.isSelected(item.path),
                             onTap: () {
                               _handleItemTap(item.path);
+                            },
+                            onSecondaryTapDown: (details) async {
+                              selectionController.selectOnly(item.path);
+
+                              final action = await ExplorerContextMenu.show(
+                                context,
+                                details.globalPosition,
+                              );
+
+                              debugPrint('Menu Action: $action');
                             },
                           );
                         }

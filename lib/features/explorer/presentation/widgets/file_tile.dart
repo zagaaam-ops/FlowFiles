@@ -9,38 +9,44 @@ class FileTile extends StatelessWidget {
     required this.file,
     required this.selected,
     this.onTap,
+    this.onSecondaryTapDown,
   });
 
   final FileEntity file;
   final bool selected;
+
   final VoidCallback? onTap;
+  final GestureTapDownCallback? onSecondaryTapDown;
 
   @override
   Widget build(BuildContext context) {
     final colorScheme = Theme.of(context).colorScheme;
 
-    return Card(
-      margin: const EdgeInsets.symmetric(
-        horizontal: 8,
-        vertical: 3,
-      ),
-      color: selected ? colorScheme.primaryContainer : null,
-      child: ListTile(
-        leading: Icon(
-          FileIconUtils.getIcon(
-            isDirectory: false,
-            extension: file.extension,
-          ),
+    return GestureDetector(
+      onSecondaryTapDown: onSecondaryTapDown,
+      child: Card(
+        margin: const EdgeInsets.symmetric(
+          horizontal: 8,
+          vertical: 3,
         ),
-        title: Text(file.name),
-        subtitle: Text('${file.size} bytes'),
-        trailing: selected
-            ? Icon(
-                Icons.check_circle,
-                color: colorScheme.primary,
-              )
-            : const Icon(Icons.chevron_right),
-        onTap: onTap,
+        color: selected ? colorScheme.primaryContainer : null,
+        child: ListTile(
+          leading: Icon(
+            FileIconUtils.getIcon(
+              isDirectory: false,
+              extension: file.extension,
+            ),
+          ),
+          title: Text(file.name),
+          subtitle: Text('${file.size} bytes'),
+          trailing: selected
+              ? Icon(
+                  Icons.check_circle,
+                  color: colorScheme.primary,
+                )
+              : const Icon(Icons.chevron_right),
+          onTap: onTap,
+        ),
       ),
     );
   }
