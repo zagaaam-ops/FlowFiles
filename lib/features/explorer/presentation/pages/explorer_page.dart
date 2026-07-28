@@ -71,12 +71,35 @@ class _ExplorerPageState extends State<ExplorerPage> {
   }
 
   /// Handles keyboard shortcuts.
+    void _handleItemTap(String path) {
+    final bool isCtrlPressed =
+        HardwareKeyboard.instance.isControlPressed;
+
+    if (isCtrlPressed) {
+      selectionController.toggleSelection(path);
+    } else {
+      selectionController.selectOnly(path);
+    }
+  }
+   /// Handles clicking on an item.
+  void _handleItemTap(String path) {
+    final bool isCtrlPressed =
+        HardwareKeyboard.instance.isControlPressed;
+
+    if (isCtrlPressed) {
+      selectionController.toggleSelection(path);
+    } else {
+      selectionController.selectOnly(path);
+    }
+  }
+
+  /// Handles keyboard shortcuts.
   void _handleKeyEvent(KeyEvent event) {
     if (event is! KeyDownEvent) {
       return;
     }
 
-    // ESC clears the selection.
+    // ESC clears the current selection.
     if (event.logicalKey == LogicalKeyboardKey.escape) {
       selectionController.clearSelection();
       return;
@@ -90,14 +113,13 @@ class _ExplorerPageState extends State<ExplorerPage> {
         event.logicalKey == LogicalKeyboardKey.keyA) {
       final items =
           controller.state.directory?.items ??
-              <FileEntity>[];
+          <FileEntity>[];
 
       selectionController.selectAll(
         items.map((item) => item.path),
       );
     }
   }
-
   @override
     Widget build(BuildContext context) {
     final state = controller.state;
