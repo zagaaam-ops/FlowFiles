@@ -58,7 +58,7 @@ class _ExplorerPageState extends State<ExplorerPage> {
     super.dispose();
   }
 
-  /// Handles mouse/touch clicks.
+  /// Handles clicking on an item.
   void _handleItemTap(String path) {
     final bool isCtrlPressed =
         HardwareKeyboard.instance.isControlPressed;
@@ -76,6 +76,7 @@ class _ExplorerPageState extends State<ExplorerPage> {
       return;
     }
 
+    // ESC clears the selection.
     if (event.logicalKey == LogicalKeyboardKey.escape) {
       selectionController.clearSelection();
       return;
@@ -84,18 +85,21 @@ class _ExplorerPageState extends State<ExplorerPage> {
     final bool isCtrlPressed =
         HardwareKeyboard.instance.isControlPressed;
 
+    // Ctrl + A selects every item.
     if (isCtrlPressed &&
         event.logicalKey == LogicalKeyboardKey.keyA) {
       final items =
-          controller.state.directory?.items ?? <FileEntity>[];
+          controller.state.directory?.items ??
+              <FileEntity>[];
 
       selectionController.selectAll(
         items.map((item) => item.path),
       );
     }
   }
+
   @override
-  Widget build(BuildContext context) {
+    Widget build(BuildContext context) {
     final state = controller.state;
 
     return Scaffold(
@@ -160,35 +164,39 @@ class _ExplorerPageState extends State<ExplorerPage> {
 
                     if (items.isEmpty) {
                       return const Center(
-                        child: Text('This folder is empty.'),
+                        child: Text(
+                          'This folder is empty.',
+                        ),
                       );
                     }
 
                     return ListView.builder(
-  itemCount: items.length,
-  itemBuilder: (context, index) {
-    final item = items[index];
+                      itemCount: items.length,
+                      itemBuilder: (context, index) {
+                        final item = items[index];
 
-    if (item.isDirectory) {
-      return FolderTile(
-        folder: item,
-        selected: selectionController.isSelected(item.path),
-        onTap: () {
-          _handleItemTap(item.path);
-        },
-      );
-    }
+                        if (item.isDirectory) {
+                          return FolderTile(
+                            folder: item,
+                            selected: selectionController
+                                .isSelected(item.path),
+                            onTap: () {
+                              _handleItemTap(item.path);
+                            },
+                          );
+                        }
 
-    return FileTile(
-      file: item,
-      selected: selectionController.isSelected(item.path),
-      onTap: () {
-        _handleItemTap(item.path);
-      },
-    );
-  },
-);
-                         },
+                        return FileTile(
+                          file: item,
+                          selected: selectionController
+                              .isSelected(item.path),
+                          onTap: () {
+                            _handleItemTap(item.path);
+                          },
+                        );
+                      },
+                    );
+                  },
                 ),
               ),
             ],
