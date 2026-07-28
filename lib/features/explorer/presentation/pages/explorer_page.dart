@@ -180,10 +180,8 @@ class _ExplorerPageState extends State<ExplorerPage> {
                         }
 
                         return FileTile(
-                          file: item,
-                          selected: selectionController.isSelected(item.path),
-                          onTap: () {
-                            _handleItemTap(item.path);
+                     _handleItemTap(item.path);
+},
                           },
                         );
                       },
