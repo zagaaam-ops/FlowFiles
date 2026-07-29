@@ -1,6 +1,9 @@
 import '../../features/explorer/data/datasources/local_file_system_data_source.dart';
 import '../../features/explorer/data/repositories/explorer_repository_impl.dart';
 import '../../features/explorer/domain/usecases/load_directory_usecase.dart';
+import '../../features/explorer/domain/usecases/copy_files_usecase.dart';
+import '../../features/explorer/domain/usecases/move_files_usecase.dart';
+import '../../features/explorer/domain/usecases/explorer_operations.dart';
 import '../../features/explorer/presentation/controllers/clipboard_controller.dart';
 import '../../features/explorer/presentation/controllers/explorer_controller.dart';
 import '../../features/explorer/presentation/controllers/selection_controller.dart';
@@ -20,8 +23,21 @@ class ServiceLocator {
   static final LoadDirectoryUseCase _loadDirectoryUseCase =
       LoadDirectoryUseCase(_repository);
 
-  static final ExplorerController explorerController =
-      ExplorerController(_loadDirectoryUseCase);
+  static final CopyFilesUseCase _copyFilesUseCase =
+      CopyFilesUseCase(_repository);
+
+  static final MoveFilesUseCase _moveFilesUseCase =
+      MoveFilesUseCase(_repository);
+
+  static final ExplorerOperations explorerOperations = ExplorerOperations(
+    copyFiles: _copyFilesUseCase,
+    moveFiles: _moveFilesUseCase,
+  );
+
+  static final ExplorerController explorerController = ExplorerController(
+    _loadDirectoryUseCase,
+    explorerOperations,
+  );
 
   static final SelectionController selectionController = SelectionController();
 

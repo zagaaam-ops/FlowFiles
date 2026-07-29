@@ -5,6 +5,8 @@ import '../../../../core/utils/file_search_utils.dart';
 import '../../../../core/utils/file_sort_utils.dart';
 import '../../domain/entities/directory_entity.dart';
 import '../../domain/usecases/load_directory_usecase.dart';
+import '../../domain/usecases/explorer_operations.dart';
+import 'clipboard_controller.dart';
 import '../state/explorer_state.dart';
 
 /// Controls the Explorer feature.
@@ -16,9 +18,13 @@ import '../state/explorer_state.dart';
 /// - Applying sorting
 /// - Applying search filtering
 class ExplorerController extends ChangeNotifier {
-  ExplorerController(this._loadDirectoryUseCase);
+  ExplorerController(
+    this._loadDirectoryUseCase,
+    this._operations,
+  );
 
   final LoadDirectoryUseCase _loadDirectoryUseCase;
+  final ExplorerOperations _operations;
 
   ExplorerState _state = const ExplorerState();
 
