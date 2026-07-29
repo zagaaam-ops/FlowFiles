@@ -121,6 +121,25 @@ class _ExplorerPageState extends State<ExplorerPage> {
     }
   }
 
+  Future<void> _showContextMenu(
+    BuildContext context,
+    Offset position,
+    String path,
+  ) async {
+    selectionController.selectOnly(path);
+
+    final action = await ExplorerContextMenu.show(
+      context,
+      position,
+    );
+
+    if (!mounted || action == null) {
+      return;
+    }
+
+    await _handleContextMenuAction(action);
+  }
+
   @override
   Widget build(BuildContext context) {
     final state = controller.state;
@@ -202,19 +221,12 @@ class _ExplorerPageState extends State<ExplorerPage> {
                             onTap: () {
                               _handleItemTap(item.path);
                             },
-                            onSecondaryTapDown: (details) async {
-                              selectionController.selectOnly(item.path);
-
-                              final action = await ExplorerContextMenu.show(
+                            onSecondaryTapDown: (details) {
+                              _showContextMenu(
                                 context,
                                 details.globalPosition,
+                                item.path,
                               );
-
-                              if (!mounted || action == null) {
-                                return;
-                              }
-
-                              await _handleContextMenuAction(action);
                             },
                           );
                         }
@@ -225,19 +237,12 @@ class _ExplorerPageState extends State<ExplorerPage> {
                           onTap: () {
                             _handleItemTap(item.path);
                           },
-                          onSecondaryTapDown: (details) async {
-                            selectionController.selectOnly(item.path);
-
-                            final action = await ExplorerContextMenu.show(
+                          onSecondaryTapDown: (details) {
+                            _showContextMenu(
                               context,
                               details.globalPosition,
+                              item.path,
                             );
-
-                            if (!mounted || action == null) {
-                              return;
-                            }
-
-                            await _handleContextMenuAction(action);
                           },
                         );
                       },
