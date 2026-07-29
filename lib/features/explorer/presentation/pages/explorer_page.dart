@@ -10,6 +10,7 @@ import '../widgets/explorer_toolbar.dart';
 import '../widgets/file_tile.dart';
 import '../widgets/explorer_context_menu.dart';
 import '../widgets/folder_tile.dart';
+import '../widgets/delete_confirmation_dialog.dart';
 
 class ExplorerPage extends StatefulWidget {
   const ExplorerPage({super.key});
@@ -114,6 +115,23 @@ class _ExplorerPageState extends State<ExplorerPage> {
         await controller.paste(
           ServiceLocator.clipboardController,
         );
+        break;
+
+      case ExplorerMenuAction.delete:
+        final confirmed = await DeleteConfirmationDialog.show(
+          context,
+          itemCount: selectionController.selectedCount,
+        );
+
+        if (!confirmed) {
+          break;
+        }
+
+        await controller.deleteFiles(
+          selectionController.selectedPaths,
+        );
+
+        selectionController.clearSelection();
         break;
 
       default:
