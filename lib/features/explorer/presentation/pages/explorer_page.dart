@@ -94,6 +94,33 @@ class _ExplorerPageState extends State<ExplorerPage> {
     }
   }
 
+  Future<void> _handleContextMenuAction(
+    ExplorerMenuAction action,
+  ) async {
+    switch (action) {
+      case ExplorerMenuAction.copy:
+        ServiceLocator.clipboardController.copy(
+          selectionController.selectedPaths,
+        );
+        break;
+
+      case ExplorerMenuAction.cut:
+        ServiceLocator.clipboardController.cut(
+          selectionController.selectedPaths,
+        );
+        break;
+
+      case ExplorerMenuAction.paste:
+        await controller.paste(
+          ServiceLocator.clipboardController,
+        );
+        break;
+
+      default:
+        break;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final state = controller.state;
@@ -183,7 +210,11 @@ class _ExplorerPageState extends State<ExplorerPage> {
                                 details.globalPosition,
                               );
 
-                              debugPrint('Menu Action: $action');
+                              if (!mounted || action == null) {
+                                return;
+                              }
+
+                              await _handleContextMenuAction(action);
                             },
                           );
                         }
@@ -192,7 +223,21 @@ class _ExplorerPageState extends State<ExplorerPage> {
                           file: item,
                           selected: selectionController.isSelected(item.path),
                           onTap: () {
-                            selectionController.toggleSelection(item.path);
+                            _handleItemTap(item.path);
+                          },
+                          onSecondaryTapDown: (details) async {
+                            selectionController.selectOnly(item.path);
+
+                            final action = await ExplorerContextMenu.show(
+                              context,
+                              details.globalPosition,
+                            );
+
+                            if (!mounted || action == null) {
+                              return;
+                            }
+
+                            await _handleContextMenuAction(action);
                           },
                         );
                       },

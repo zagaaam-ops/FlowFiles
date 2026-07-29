@@ -5,6 +5,7 @@ enum ExplorerMenuAction {
   rename,
   copy,
   cut,
+  paste,
   delete,
   properties,
 }
@@ -39,6 +40,10 @@ class ExplorerContextMenu {
         PopupMenuItem(
           value: ExplorerMenuAction.cut,
           child: Text('Cut'),
+        ),
+        PopupMenuItem(
+          value: ExplorerMenuAction.paste,
+          child: Text('Paste'),
         ),
         PopupMenuDivider(),
         PopupMenuItem(

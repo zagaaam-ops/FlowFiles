@@ -128,4 +128,26 @@ class ExplorerRepositoryImpl implements ExplorerRepository {
       }
     }
   }
+
+  @override
+  Future<void> deleteFiles({
+    required List<String> sourcePaths,
+  }) async {
+    for (final path in sourcePaths) {
+      final type = FileSystemEntity.typeSync(path);
+
+      switch (type) {
+        case FileSystemEntityType.file:
+          await File(path).delete();
+          break;
+
+        case FileSystemEntityType.directory:
+          await Directory(path).delete(recursive: true);
+          break;
+
+        default:
+          break;
+      }
+    }
+  }
 }

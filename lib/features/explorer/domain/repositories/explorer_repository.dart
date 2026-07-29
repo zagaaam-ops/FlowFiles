@@ -20,4 +20,9 @@ abstract class ExplorerRepository {
     required List<String> sourcePaths,
     required String destinationPath,
   });
+
+  /// Deletes files and folders.
+  Future<void> deleteFiles({
+    required List<String> sourcePaths,
+  });
 }
