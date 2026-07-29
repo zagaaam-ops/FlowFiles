@@ -9,6 +9,13 @@ abstract class ExplorerRepository {
 
   Future<bool> directoryExists(String path);
 
+  /// Copies files and folders into another directory.
+  Future<void> copyFiles({
+    required List<String> sourcePaths,
+    required String destinationPath,
+  });
+
+  /// Moves files and folders into another directory.
   Future<void> moveFiles({
     required List<String> sourcePaths,
     required String destinationPath,

@@ -60,23 +60,72 @@ class ExplorerRepositoryImpl implements ExplorerRepository {
   }
 
   @override
-  Future<void> moveFiles({
+  Future<void> copyFiles({
     required List<String> sourcePaths,
     required String destinationPath,
   }) async {
     for (final sourcePath in sourcePaths) {
-      final source = File(sourcePath);
-
-      if (!await source.exists()) {
-        continue;
-      }
+      final type = FileSystemEntity.typeSync(sourcePath);
 
       final destination = p.join(
         destinationPath,
         p.basename(sourcePath),
       );
 
-      await source.rename(destination);
+      if (type == FileSystemEntityType.file) {
+        await File(sourcePath).copy(destination);
+      } else if (type == FileSystemEntityType.directory) {
+        await _copyDirectory(
+          Directory(sourcePath),
+          Directory(destination),
+        );
+      }
+    }
+  }
+
+  @override
+  Future<void> moveFiles({
+    required List<String> sourcePaths,
+    required String destinationPath,
+  }) async {
+    for (final sourcePath in sourcePaths) {
+      final type = FileSystemEntity.typeSync(sourcePath);
+
+      final destination = p.join(
+        destinationPath,
+        p.basename(sourcePath),
+      );
+
+      if (type == FileSystemEntityType.file) {
+        await File(sourcePath).rename(destination);
+      } else if (type == FileSystemEntityType.directory) {
+        await Directory(sourcePath).rename(destination);
+      }
+    }
+  }
+
+  Future<void> _copyDirectory(
+    Directory source,
+    Directory destination,
+  ) async {
+    if (!await destination.exists()) {
+      await destination.create(recursive: true);
+    }
+
+    await for (final entity in source.list(recursive: false)) {
+      final newPath = p.join(
+        destination.path,
+        p.basename(entity.path),
+      );
+
+      if (entity is File) {
+        await entity.copy(newPath);
+      } else if (entity is Directory) {
+        await _copyDirectory(
+          entity,
+          Directory(newPath),
+        );
+      }
     }
   }
 }
