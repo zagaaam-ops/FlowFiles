@@ -84,6 +84,32 @@ class ExplorerRepositoryImpl implements ExplorerRepository {
   }
 
   @override
+  Future<void> rename(
+    String sourcePath,
+    String newName,
+  ) async {
+    final entity = FileSystemEntity.typeSync(sourcePath);
+
+    final destination = p.join(
+      p.dirname(sourcePath),
+      newName,
+    );
+
+    switch (entity) {
+      case FileSystemEntityType.file:
+        await File(sourcePath).rename(destination);
+        break;
+
+      case FileSystemEntityType.directory:
+        await Directory(sourcePath).rename(destination);
+        break;
+
+      default:
+        throw Exception('Unsupported file system entity.');
+    }
+  }
+
+  @override
   Future<void> moveFiles({
     required List<String> sourcePaths,
     required String destinationPath,

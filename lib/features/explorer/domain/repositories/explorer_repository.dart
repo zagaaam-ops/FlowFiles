@@ -21,6 +21,12 @@ abstract class ExplorerRepository {
     required String destinationPath,
   });
 
+  /// Renames a file or folder.
+  Future<void> rename(
+    String sourcePath,
+    String newName,
+  );
+
   /// Deletes files and folders.
   Future<void> deleteFiles({
     required List<String> sourcePaths,

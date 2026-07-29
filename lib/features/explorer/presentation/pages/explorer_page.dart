@@ -10,6 +10,7 @@ import '../widgets/explorer_toolbar.dart';
 import '../widgets/file_tile.dart';
 import '../widgets/explorer_context_menu.dart';
 import '../widgets/folder_tile.dart';
+import '../widgets/name_input_dialog.dart';
 import '../widgets/delete_confirmation_dialog.dart';
 
 class ExplorerPage extends StatefulWidget {
@@ -109,6 +110,33 @@ class _ExplorerPageState extends State<ExplorerPage> {
         ServiceLocator.clipboardController.cut(
           selectionController.selectedPaths,
         );
+        break;
+
+      case ExplorerMenuAction.rename:
+        final selected = selectionController.selectedPaths;
+
+        if (selected.isEmpty) {
+          break;
+        }
+
+        final currentName = selected.first.split('/').last;
+
+        final newName = await NameInputDialog.show(
+          context,
+          title: 'Rename',
+          initialValue: currentName,
+        );
+
+        if (newName == null || newName.isEmpty || newName == currentName) {
+          break;
+        }
+
+        await controller.rename(
+          sourcePath: selected.first,
+          newName: newName,
+        );
+
+        selectionController.clearSelection();
         break;
 
       case ExplorerMenuAction.paste:

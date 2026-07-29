@@ -155,4 +155,20 @@ class ExplorerController extends ChangeNotifier {
       items: filteredItems,
     );
   }
+
+  Future<void> rename({
+    required String sourcePath,
+    required String newName,
+  }) async {
+    await _operations.rename(
+      sourcePath: sourcePath,
+      newName: newName,
+    );
+
+    final currentPath = _state.directory?.path;
+
+    if (currentPath != null) {
+      await openDirectory(currentPath);
+    }
+  }
 }

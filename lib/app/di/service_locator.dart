@@ -4,6 +4,7 @@ import '../../features/explorer/domain/usecases/load_directory_usecase.dart';
 import '../../features/explorer/domain/usecases/copy_files_usecase.dart';
 import '../../features/explorer/domain/usecases/delete_files_usecase.dart';
 import '../../features/explorer/domain/usecases/move_files_usecase.dart';
+import '../../features/explorer/domain/usecases/rename_usecase.dart';
 import '../../features/explorer/domain/usecases/explorer_operations.dart';
 import '../../features/explorer/presentation/controllers/clipboard_controller.dart';
 import '../../features/explorer/presentation/controllers/explorer_controller.dart';
@@ -33,10 +34,13 @@ class ServiceLocator {
   static final DeleteFilesUseCase _deleteFilesUseCase =
       DeleteFilesUseCase(_repository);
 
+  static final RenameUseCase _renameUseCase = RenameUseCase(_repository);
+
   static final ExplorerOperations explorerOperations = ExplorerOperations(
     copyFiles: _copyFilesUseCase,
     moveFiles: _moveFilesUseCase,
     deleteFiles: _deleteFilesUseCase,
+    rename: _renameUseCase,
   );
 
   static final ExplorerController explorerController = ExplorerController(
