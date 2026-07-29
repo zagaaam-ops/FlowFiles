@@ -121,6 +121,20 @@ class ExplorerController extends ChangeNotifier {
     await openDirectory(directory.path);
   }
 
+  Future<void> deleteFiles(
+    List<String> sourcePaths,
+  ) async {
+    await _operations.deleteFiles(
+      sourcePaths: sourcePaths,
+    );
+
+    final currentPath = _state.directory?.path;
+
+    if (currentPath != null) {
+      await openDirectory(currentPath);
+    }
+  }
+
   DirectoryEntity _processDirectory(
     DirectoryEntity directory,
   ) {
