@@ -87,6 +87,40 @@ class ExplorerController extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> paste(
+    ClipboardController clipboard,
+  ) async {
+    final directory = state.directory;
+
+    if (directory == null) {
+      return;
+    }
+
+    final clipboardState = clipboard.state;
+
+    if (!clipboardState.hasData) {
+      return;
+    }
+
+    if (clipboardState.isCopy) {
+      await _operations.copyFiles(
+        sourcePaths: clipboardState.paths,
+        destinationPath: directory.path,
+      );
+    }
+
+    if (clipboardState.isCut) {
+      await _operations.moveFiles(
+        sourcePaths: clipboardState.paths,
+        destinationPath: directory.path,
+      );
+
+      clipboard.clear();
+    }
+
+    await openDirectory(directory.path);
+  }
+
   DirectoryEntity _processDirectory(
     DirectoryEntity directory,
   ) {
