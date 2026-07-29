@@ -2,6 +2,7 @@ import '../../features/explorer/data/datasources/local_file_system_data_source.d
 import '../../features/explorer/data/repositories/explorer_repository_impl.dart';
 import '../../features/explorer/domain/usecases/load_directory_usecase.dart';
 import '../../features/explorer/domain/usecases/copy_files_usecase.dart';
+import '../../features/explorer/domain/usecases/delete_files_usecase.dart';
 import '../../features/explorer/domain/usecases/move_files_usecase.dart';
 import '../../features/explorer/domain/usecases/explorer_operations.dart';
 import '../../features/explorer/presentation/controllers/clipboard_controller.dart';
@@ -29,9 +30,13 @@ class ServiceLocator {
   static final MoveFilesUseCase _moveFilesUseCase =
       MoveFilesUseCase(_repository);
 
+  static final DeleteFilesUseCase _deleteFilesUseCase =
+      DeleteFilesUseCase(_repository);
+
   static final ExplorerOperations explorerOperations = ExplorerOperations(
     copyFiles: _copyFilesUseCase,
     moveFiles: _moveFilesUseCase,
+    deleteFiles: _deleteFilesUseCase,
   );
 
   static final ExplorerController explorerController = ExplorerController(
