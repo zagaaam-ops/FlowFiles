@@ -1,118 +1,77 @@
-# 🚀 FlowFiles
+# FlowFiles
 
-**FlowFiles** is a modern cross-platform desktop file organization application built with Flutter.
+FlowFiles is a modern cross-platform file manager built with Flutter.
 
-It helps users organize files quickly by browsing folders, selecting files, and moving them into categorized destinations with a clean, intuitive interface.
+## Vision
 
----
-
-## ✨ Features
-
-### Current
-- Clean Architecture
-- Flutter Desktop
-- Riverpod State Management
-- Repository Pattern
-- Cross-platform structure
-
-### Planned
-- 📂 File Explorer
-- 📁 Folder Navigation
-- 🗂 Multi-file Selection
-- 🚚 Copy / Move Engine
-- 🔍 Search
-- ⭐ Favorites
-- 👁 File Preview
-- 🌙 Dark Mode
-
----
-
-## 🖥 Supported Platforms
+Create a fast, clean and powerful file explorer that works consistently across:
 
 - Windows
-- Linux
-- macOS
+- Android
+- iOS
+- Tablets
+
+using a single Flutter codebase.
 
 ---
 
-## 🏗 Architecture
+## Current Features
 
-FlowFiles follows **Clean Architecture**.
+### Navigation
 
-```
-Presentation
-     │
-Domain
-     │
-Data
-```
+- Browse folders
+- Home
+- Up
+- Breadcrumb navigation
+- Refresh
 
-Project structure:
+### Explorer
 
-```
-lib/
- ├── app/
- ├── core/
- ├── features/
- │     ├── explorer/
- │     ├── organizer/
- │     ├── preview/
- │     ├── search/
- │     └── settings/
- └── shared/
-```
+- Search
+- Sorting
+- Multi-selection
+
+### File Operations
+
+- Copy
+- Cut
+- Paste
+- Rename
+- Delete
+- Create Folder
+- Create Empty File
 
 ---
 
-## 🛠 Built With
+## Architecture
 
-- Flutter
-- Dart
-- Riverpod
 - Clean Architecture
+- Repository Pattern
+- Use Cases
+- Dependency Injection
+- Platform-ready design
 
 ---
 
-## 🚀 Getting Started
+## Supported Platforms
+
+| Platform | Status |
+|----------|--------|
+| Windows | ✅ Primary |
+| Android | 🚧 In Progress |
+| iOS | 🚧 In Progress |
+| macOS | Planned |
+
+---
+
+## Development
 
 ```bash
 flutter pub get
+
+dart format .
+
 flutter analyze
-flutter run
-```
 
----
+flutter run -d windows
 
-## 📅 Roadmap
-
-### v0.1.0
-- Stable Architecture ✅
-
-### v0.2.0
-- File Explorer 🚧
-
-### v0.3.0
-- Organizer Engine
-
-### v0.4.0
-- Search & Preview
-
-### v1.0.0
-- Production Release
-
----
-
-## 👨‍💻 Author
-
-**Rana Muhammad Zagham Ali**
-
-PMP | Civil Work Senior Engineer | Zain KSA
-
-GitHub:
-https://github.com/zagaaam-ops
-
----
-
-## 📄 License
-
-MIT License

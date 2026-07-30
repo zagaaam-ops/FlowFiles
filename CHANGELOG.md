@@ -1,123 +1,79 @@
 # Changelog
 
-All notable changes to this project will be documented in this file.
+All notable changes to FlowFiles will be documented in this file.
 
-This project follows Semantic Versioning (SemVer).
+The format is inspired by Keep a Changelog.
 
 ---
 
-# [Unreleased]
+# v0.1.0-MVP (In Development)
+
+Release Goal:
+First public build for testing.
+
+---
 
 ## Added
 
-- Initial GitHub repository
-- MIT License
-- Project documentation
-- Project Vision
-- System Architecture
-- Development Roadmap
-- Coding Standards
-- Contributing Guide
-- Security Policy
-- Release Process
-- Initial Flutter project structure
-- Clean Architecture planning
-- Explorer module planning
-- Organizer module planning
+### Navigation
+- Home navigation
+- Up navigation
+- Breadcrumb navigation
+- Refresh
 
-## Changed
+### Explorer
+- Search
+- Sort by Name
+- Sort by Date
+- Sort by Size
+- Multi-selection
 
-- README redesigned
-- Repository structure improved
-- Documentation reorganized
+### File Operations
+- Copy
+- Cut
+- Paste
+- Rename
+- Delete
+- Create Folder
+- Create Empty File
+
+### User Interface
+- Explorer toolbar
+- Context menu
+- Create menu
+- Loading indicator
+- Empty folder message
+
+### Architecture
+- Clean Architecture
+- Repository Pattern
+- Use Cases
+- Dependency Injection
+- Platform-ready structure
+
+---
 
 ## Fixed
 
-- Initial repository cleanup
+- Ongoing during MVP development.
 
 ---
 
-# [0.1.0] - In Development
+## Known Issues
 
-## Planned
+- Pending Windows integration testing.
+- Pending Android validation.
+- Pending iOS validation.
 
-### Explorer Engine
+---
 
-- Folder browsing
-- File browsing
-- Folder navigation
-- Breadcrumb navigation
-- Sorting
-- Filtering
+## Next Release (v0.2.0)
 
-### Organizer Engine
+Planned Features:
 
-- Organizer Mode
-- Persistent source folder
-- Automatic multi-selection
-- Split View
-
-### File Operations
-
-- Move files
+- Favorites
 - Drag & Drop
-- Undo
-- Progress tracking
+- Keyboard shortcuts improvements
+- Better mobile UX
+- Context menu enhancements
 
-### Settings
-
-- Theme
-- Language
-- Preferences
-
----
-
-# Future Releases
-
-## Version 0.2
-
-Performance improvements
-
-Recent destinations
-
-Favorite folders
-
-Keyboard shortcuts
-
----
-
-## Version 0.3
-
-Search
-
-Recursive search
-
-Preview
-
-Filters
-
----
-
-## Version 0.5
-
-Duplicate finder
-
-Batch rename
-
-File tags
-
-Automation
-
----
-
-## Version 1.0
-
-First Stable Release
-
-Cross-platform support
-
-GitHub CI/CD
-
-Complete documentation
-
-Production-ready application
