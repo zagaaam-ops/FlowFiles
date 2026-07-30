@@ -171,4 +171,28 @@ class ExplorerController extends ChangeNotifier {
       await openDirectory(currentPath);
     }
   }
+
+  Future<void> createFolder({
+    required String parentPath,
+    required String folderName,
+  }) async {
+    await _operations.createFolder(
+      parentPath: parentPath,
+      folderName: folderName,
+    );
+
+    await openDirectory(parentPath);
+  }
+
+  Future<void> createFile({
+    required String parentPath,
+    required String fileName,
+  }) async {
+    await _operations.createFile(
+      parentPath: parentPath,
+      fileName: fileName,
+    );
+
+    await openDirectory(parentPath);
+  }
 }

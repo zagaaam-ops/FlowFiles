@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../../../../core/enums/sort_option.dart';
 import 'breadcrumb_bar.dart';
+import 'create_menu_button.dart';
 
 class ExplorerToolbar extends StatefulWidget {
   const ExplorerToolbar({
@@ -13,6 +14,8 @@ class ExplorerToolbar extends StatefulWidget {
     this.onHome,
     this.onUp,
     this.onRefresh,
+    this.onNewFolder,
+    this.onNewFile,
     this.onNavigate,
     this.onSortChanged,
     this.onSearchChanged,
@@ -26,6 +29,8 @@ class ExplorerToolbar extends StatefulWidget {
   final VoidCallback? onHome;
   final VoidCallback? onUp;
   final VoidCallback? onRefresh;
+  final VoidCallback? onNewFolder;
+  final VoidCallback? onNewFile;
 
   final ValueChanged<String>? onNavigate;
   final ValueChanged<SortOption>? onSortChanged;
@@ -104,6 +109,18 @@ class _ExplorerToolbarState extends State<ExplorerToolbar> {
                   tooltip: 'Refresh',
                   onPressed: widget.onRefresh,
                   icon: const Icon(Icons.refresh),
+                ),
+                CreateMenuButton(
+                  onSelected: (action) {
+                    switch (action) {
+                      case CreateMenuAction.folder:
+                        widget.onNewFolder?.call();
+                        break;
+                      case CreateMenuAction.file:
+                        widget.onNewFile?.call();
+                        break;
+                    }
+                  },
                 ),
                 PopupMenuButton<SortOption>(
                   initialValue: widget.currentSort,

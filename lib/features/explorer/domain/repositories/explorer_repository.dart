@@ -27,6 +27,18 @@ abstract class ExplorerRepository {
     String newName,
   );
 
+  /// Creates a new folder inside the given parent directory.
+  Future<void> createFolder({
+    required String parentPath,
+    required String folderName,
+  });
+
+  /// Creates a new empty file inside the given parent directory.
+  Future<void> createFile({
+    required String parentPath,
+    required String fileName,
+  });
+
   /// Deletes files and folders.
   Future<void> deleteFiles({
     required List<String> sourcePaths,

@@ -84,6 +84,38 @@ class ExplorerRepositoryImpl implements ExplorerRepository {
   }
 
   @override
+  Future<void> createFile({
+    required String parentPath,
+    required String fileName,
+  }) async {
+    final file = File(
+      p.join(
+        parentPath,
+        fileName,
+      ),
+    );
+
+    if (!await file.exists()) {
+      await file.create();
+    }
+  }
+
+  @override
+  Future<void> createFolder({
+    required String parentPath,
+    required String folderName,
+  }) async {
+    final directory = Directory(
+      p.join(
+        parentPath,
+        folderName,
+      ),
+    );
+
+    await directory.create();
+  }
+
+  @override
   Future<void> rename(
     String sourcePath,
     String newName,

@@ -222,6 +222,54 @@ class _ExplorerPageState extends State<ExplorerPage> {
                     controller.openDirectory(path);
                   }
                 },
+                onNewFolder: () async {
+                  final parent = state.directory?.path;
+
+                  if (parent == null) {
+                    return;
+                  }
+
+                  final folderName = await NameInputDialog.show(
+                    context,
+                    title: 'New Folder',
+                    initialValue: '',
+                    hintText: 'Folder name',
+                  );
+
+                  if (!mounted ||
+                      folderName == null ||
+                      folderName.trim().isEmpty) {
+                    return;
+                  }
+
+                  await controller.createFolder(
+                    parentPath: parent,
+                    folderName: folderName.trim(),
+                  );
+                },
+                onNewFile: () async {
+                  final parent = state.directory?.path;
+
+                  if (parent == null) {
+                    return;
+                  }
+
+                  final fileName = await NameInputDialog.show(
+                    context,
+                    title: 'New Empty File',
+                    initialValue: '',
+                    hintText: 'File name',
+                  );
+
+                  if (!mounted || fileName == null || fileName.trim().isEmpty) {
+                    return;
+                  }
+
+                  await controller.createFile(
+                    parentPath: parent,
+                    fileName: fileName.trim(),
+                  );
+                },
                 onNavigate: (path) {
                   controller.openDirectory(path);
                 },
