@@ -22,8 +22,7 @@ class AppConstants {
   static const double tabletBreakpoint = 700;
 
   /// Default animation duration
-  static const Duration animationDuration =
-      Duration(milliseconds: 200);
+  static const Duration animationDuration = Duration(milliseconds: 200);
 
   /// Maximum recent folders
   static const int recentFolderLimit = 20;

@@ -19,8 +19,7 @@ class AppStrings {
 
   static const String appName = 'FlowFiles';
 
-  static const String appTagline =
-      'Built for organizing, not browsing.';
+  static const String appTagline = 'Built for organizing, not browsing.';
 
   static const String appVersion = '0.1.0-alpha';
 
@@ -62,18 +61,13 @@ class AppStrings {
   // Messages
   // -------------------------------------------------------------------------
 
-  static const String emptyFolder =
-      'This folder does not contain any files.';
+  static const String emptyFolder = 'This folder does not contain any files.';
 
-  static const String noSelection =
-      'No files selected.';
+  static const String noSelection = 'No files selected.';
 
-  static const String loading =
-      'Loading...';
+  static const String loading = 'Loading...';
 
-  static const String ready =
-      'Ready';
+  static const String ready = 'Ready';
 
-  static const String error =
-      'Something went wrong.';
+  static const String error = 'Something went wrong.';
 }

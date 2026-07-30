@@ -7,10 +7,8 @@ import 'explorer_notifier.dart';
 import '../state/explorer_state.dart';
 
 final explorerProvider =
-    StateNotifierProvider<
-        ExplorerNotifier,
-        ExplorerState>((ref) {
-final repository = ExplorerRepositoryImpl(LocalFileSystemDataSource());
+    StateNotifierProvider<ExplorerNotifier, ExplorerState>((ref) {
+  final repository = ExplorerRepositoryImpl(LocalFileSystemDataSource());
 
   return ExplorerNotifier(
     LoadDirectoryUseCase(repository),

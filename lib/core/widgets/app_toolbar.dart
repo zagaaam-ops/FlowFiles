@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../constants/app_strings.dart';
 
-class AppToolbar extends StatelessWidget
-    implements PreferredSizeWidget {
+class AppToolbar extends StatelessWidget implements PreferredSizeWidget {
   const AppToolbar({super.key});
 
   @override
@@ -23,9 +22,7 @@ class AppToolbar extends StatelessWidget
           ),
           Text(
             AppStrings.appTagline,
-            style: Theme.of(context)
-                .textTheme
-                .labelSmall,
+            style: Theme.of(context).textTheme.labelSmall,
           ),
         ],
       ),

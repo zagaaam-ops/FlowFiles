@@ -4,8 +4,7 @@ import '../../domain/usecases/load_directory_usecase.dart';
 import '../state/explorer_state.dart';
 
 class ExplorerNotifier extends StateNotifier<ExplorerState> {
-  ExplorerNotifier(this._loadDirectory)
-      : super(const ExplorerState());
+  ExplorerNotifier(this._loadDirectory) : super(const ExplorerState());
 
   final LoadDirectoryUseCase _loadDirectory;
 

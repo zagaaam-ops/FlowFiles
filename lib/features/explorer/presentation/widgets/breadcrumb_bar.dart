@@ -12,10 +12,8 @@ class BreadcrumbBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final segments = path
-        .split(RegExp(r'[\\/]+'))
-        .where((e) => e.isNotEmpty)
-        .toList();
+    final segments =
+        path.split(RegExp(r'[\\/]+')).where((e) => e.isNotEmpty).toList();
 
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,

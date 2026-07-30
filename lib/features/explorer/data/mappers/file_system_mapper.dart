@@ -20,9 +20,8 @@ class FileSystemMapper {
 
     final name = file.path.split(Platform.pathSeparator).last;
 
-    final extension = name.contains('.')
-        ? name.split('.').last.toLowerCase()
-        : '';
+    final extension =
+        name.contains('.') ? name.split('.').last.toLowerCase() : '';
 
     return ExplorerFile(
       name: name,

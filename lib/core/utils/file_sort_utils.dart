@@ -30,32 +30,32 @@ class FileSortUtils {
       case SortOption.dateNewest:
         sorted.sort(
           (a, b) => b.lastModified.compareTo(
-                a.lastModified,
-              ),
+            a.lastModified,
+          ),
         );
         break;
 
       case SortOption.dateOldest:
         sorted.sort(
           (a, b) => a.lastModified.compareTo(
-                b.lastModified,
-              ),
+            b.lastModified,
+          ),
         );
         break;
 
       case SortOption.sizeLargest:
         sorted.sort(
           (a, b) => b.size.compareTo(
-                a.size,
-              ),
+            a.size,
+          ),
         );
         break;
 
       case SortOption.sizeSmallest:
         sorted.sort(
           (a, b) => a.size.compareTo(
-                b.size,
-              ),
+            b.size,
+          ),
         );
         break;
 
