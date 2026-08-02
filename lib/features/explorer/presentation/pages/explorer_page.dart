@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 
 import '../../../../app/di/service_locator.dart';
 import '../../../../core/utils/path_utils.dart';
+import '../../../../core/utils/file_validation_utils.dart';
 import '../../domain/entities/file_entity.dart';
 import '../controllers/explorer_controller.dart';
 import '../controllers/selection_controller.dart';
@@ -93,6 +94,18 @@ class _ExplorerPageState extends State<ExplorerPage> {
       selectionController.selectAll(
         items.map((item) => item.path),
       );
+    }
+
+    // Delete selected items.
+    if (event.logicalKey == LogicalKeyboardKey.delete) {
+      if (selectionController.selectedCount == 0) {
+        return;
+      }
+
+      _handleContextMenuAction(
+        ExplorerMenuAction.delete,
+      );
+      return;
     }
   }
 
@@ -229,6 +242,8 @@ class _ExplorerPageState extends State<ExplorerPage> {
                     return;
                   }
 
+                  final messenger = ScaffoldMessenger.of(context);
+
                   final folderName = await NameInputDialog.show(
                     context,
                     title: 'New Folder',
@@ -240,6 +255,22 @@ class _ExplorerPageState extends State<ExplorerPage> {
                       folderName == null ||
                       folderName.trim().isEmpty) {
                     return;
+                  }
+
+                  final existingNames =
+                      state.directory?.items.map((e) => e.name) ?? const [];
+
+                  if (FileValidationUtils.nameExists(
+                    existingNames,
+                    folderName,
+                  )) {
+                    messenger.showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          'A file or folder with this name already exists.',
+                        ),
+                      ),
+                    );
                   }
 
                   await controller.createFolder(

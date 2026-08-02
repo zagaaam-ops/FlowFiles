@@ -12,22 +12,24 @@ class BreadcrumbBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final segments =
-        path.split(RegExp(r'[\\/]+')).where((e) => e.isNotEmpty).toList();
+    final separator = path.contains('\\') ? '\\' : '/';
 
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Row(
-        children: [
-          InkWell(
-            borderRadius: BorderRadius.circular(6),
-            onTap: () => onSegmentTap?.call('/'),
-            child: const Padding(
-              padding: EdgeInsets.symmetric(
-                horizontal: 6,
-                vertical: 4,
-              ),
-              child: Row(
+    final parts = path.split(separator).where((e) => e.isNotEmpty).toList();
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(
+        horizontal: 12,
+        vertical: 8,
+      ),
+      color: Theme.of(context).colorScheme.surface,
+      child: SingleChildScrollView(
+        scrollDirection: Axis.horizontal,
+        child: Row(
+          children: [
+            InkWell(
+              onTap: () => onSegmentTap?.call(separator),
+              child: const Row(
                 children: [
                   Icon(Icons.home, size: 18),
                   SizedBox(width: 4),
@@ -35,36 +37,35 @@ class BreadcrumbBar extends StatelessWidget {
                 ],
               ),
             ),
-          ),
-          for (int i = 0; i < segments.length; i++) ...[
-            const Padding(
-              padding: EdgeInsets.symmetric(horizontal: 4),
-              child: Icon(
-                Icons.chevron_right,
-                size: 18,
-              ),
-            ),
-            InkWell(
-              borderRadius: BorderRadius.circular(6),
-              onTap: () {
-                final target = segments.take(i + 1).join('/');
-                onSegmentTap?.call('/$target');
-              },
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 6,
-                  vertical: 4,
+            for (int i = 0; i < parts.length; i++) ...[
+              const Padding(
+                padding: EdgeInsets.symmetric(horizontal: 6),
+                child: Icon(
+                  Icons.chevron_right,
+                  size: 18,
                 ),
+              ),
+              InkWell(
+                onTap: onSegmentTap == null
+                    ? null
+                    : () {
+                        final root = separator == "\\" ? parts.first : "";
+                        final subPath = separator == "\\"
+                            ? root +
+                                separator +
+                                parts.skip(1).take(i).join(separator) +
+                                (i > 0 ? separator : "")
+                            : separator + parts.take(i + 1).join(separator);
+                        onSegmentTap!(subPath);
+                      },
                 child: Text(
-                  segments[i],
-                  style: const TextStyle(
-                    fontWeight: FontWeight.w500,
-                  ),
+                  parts[i],
+                  style: Theme.of(context).textTheme.bodyMedium,
                 ),
               ),
-            ),
+            ],
           ],
-        ],
+        ),
       ),
     );
   }
