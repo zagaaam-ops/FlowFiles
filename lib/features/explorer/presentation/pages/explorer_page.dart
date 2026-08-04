@@ -12,7 +12,9 @@ import '../widgets/file_tile.dart';
 import '../widgets/explorer_context_menu.dart';
 import '../widgets/folder_tile.dart';
 import '../widgets/name_input_dialog.dart';
+import '../widgets/status_bar.dart';
 import '../widgets/delete_confirmation_dialog.dart';
+import '../widgets/properties_dialog.dart';
 
 class ExplorerPage extends StatefulWidget {
   const ExplorerPage({super.key});
@@ -156,6 +158,25 @@ class _ExplorerPageState extends State<ExplorerPage> {
         await controller.paste(
           ServiceLocator.clipboardController,
         );
+        break;
+
+      case ExplorerMenuAction.properties:
+        final selected = selectionController.selectedPaths;
+
+        if (selected.isEmpty) {
+          break;
+        }
+
+        final fileEntity = controller.state.directory?.items.firstWhere(
+          (e) => e.path == selected.first,
+        );
+
+        if (fileEntity != null && mounted) {
+          await PropertiesDialog.show(
+            context,
+            fileEntity,
+          );
+        }
         break;
 
       case ExplorerMenuAction.delete:
@@ -374,6 +395,12 @@ class _ExplorerPageState extends State<ExplorerPage> {
                     );
                   },
                 ),
+              ),
+              StatusBar(
+                itemCount: state.directory?.items.length ?? 0,
+                selectedCount: selectionController.selectedCount,
+                totalSize: (state.directory?.items ?? const <FileEntity>[])
+                    .fold<int>(0, (sum, file) => sum + file.size),
               ),
             ],
           ),
