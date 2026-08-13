@@ -8,49 +8,41 @@ import 'package:fast_file_organizer/features/explorer/domain/usecases/load_direc
 import 'package:fast_file_organizer/features/explorer/presentation/controllers/explorer_controller.dart';
 
 void main() {
-  late Directory tempDirectory;
-  late ExplorerController controller;
-
-  setUp(() {
-    tempDirectory =
-        Directory.systemTemp.createTempSync('flowfiles_controller_test_');
-
-    File('${tempDirectory.path}/alpha.txt')
-        .writeAsStringSync('alpha');
-
-    File('${tempDirectory.path}/beta.txt')
-        .writeAsStringSync('beta');
-
-    final repository = ExplorerRepositoryImpl(
-      LocalFileSystemDataSource(),
-    );
-
-    controller = ExplorerController(
-      LoadDirectoryUseCase(repository),
-    );
-  });
-
-  tearDown(() {
-    if (tempDirectory.existsSync()) {
-      tempDirectory.deleteSync(recursive: true);
-    }
-  });
-
   test(
-    'loads files from a real directory',
+    'ExplorerController loads a directory',
     () async {
-      await controller.openDirectory(tempDirectory.path);
+      final tempDirectory =
+          Directory.systemTemp.createTempSync('flowfiles_controller_test_');
 
-      final directory = controller.state.directory;
+      try {
+        File('${tempDirectory.path}/alpha.txt').writeAsStringSync('alpha');
 
-      expect(directory, isNotNull);
-      expect(
-        directory!.items.map((item) => item.name),
-        containsAll([
-          'alpha.txt',
-          'beta.txt',
-        ]),
-      );
+        File('${tempDirectory.path}/beta.txt').writeAsStringSync('beta');
+
+        final repository = ExplorerRepositoryImpl(
+          LocalFileSystemDataSource(),
+        );
+
+        final controller = ExplorerController(
+          LoadDirectoryUseCase(repository),
+        );
+
+        await controller.openDirectory(tempDirectory.path);
+
+        expect(controller.state.directory, isNotNull);
+        expect(controller.state.directory!.items.length, 2);
+        expect(
+          controller.state.directory!.items.map((item) => item.name),
+          containsAll(<String>[
+            'alpha.txt',
+            'beta.txt',
+          ]),
+        );
+      } finally {
+        if (tempDirectory.existsSync()) {
+          tempDirectory.deleteSync(recursive: true);
+        }
+      }
     },
   );
 }
