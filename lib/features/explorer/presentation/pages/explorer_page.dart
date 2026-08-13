@@ -11,7 +11,14 @@ import '../widgets/file_tile.dart';
 import '../widgets/folder_tile.dart';
 
 class ExplorerPage extends StatefulWidget {
-  const ExplorerPage({super.key});
+  const ExplorerPage({
+    super.key,
+    this.controller,
+    this.selectionController,
+  });
+
+  final ExplorerController? controller;
+  final SelectionController? selectionController;
 
   @override
   State<ExplorerPage> createState() => _ExplorerPageState();
@@ -27,15 +34,18 @@ class _ExplorerPageState extends State<ExplorerPage> {
   void initState() {
     super.initState();
 
-    controller = ServiceLocator.explorerController;
-    selectionController = ServiceLocator.selectionController;
+    controller = widget.controller ?? ServiceLocator.explorerController;
+    selectionController =
+        widget.selectionController ?? ServiceLocator.selectionController;
 
     controller.addListener(_refresh);
     selectionController.addListener(_refresh);
 
-    controller.openDirectory(
-      PathUtils.getHomeDirectory(),
-    );
+    if (widget.controller == null) {
+      controller.openDirectory(
+        PathUtils.getHomeDirectory(),
+      );
+    }
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (mounted) {
@@ -60,8 +70,7 @@ class _ExplorerPageState extends State<ExplorerPage> {
 
   /// Handles mouse click / touch.
   void _handleItemTap(String path) {
-    final bool isCtrlPressed =
-        HardwareKeyboard.instance.isControlPressed;
+    final bool isCtrlPressed = HardwareKeyboard.instance.isControlPressed;
 
     if (isCtrlPressed) {
       selectionController.toggleSelection(path);
@@ -81,14 +90,10 @@ class _ExplorerPageState extends State<ExplorerPage> {
       return;
     }
 
-    final bool isCtrlPressed =
-        HardwareKeyboard.instance.isControlPressed;
+    final bool isCtrlPressed = HardwareKeyboard.instance.isControlPressed;
 
-    if (isCtrlPressed &&
-        event.logicalKey == LogicalKeyboardKey.keyA) {
-      final items =
-          controller.state.directory?.items ??
-          <FileEntity>[];
+    if (isCtrlPressed && event.logicalKey == LogicalKeyboardKey.keyA) {
+      final items = controller.state.directory?.items ?? <FileEntity>[];
 
       selectionController.selectAll(
         items.map((item) => item.path),
@@ -112,25 +117,21 @@ class _ExplorerPageState extends State<ExplorerPage> {
                 currentPath: state.directory?.path ?? '',
                 currentSort: state.sortOption,
                 searchQuery: state.searchQuery,
-                selectedCount:
-                    selectionController.selectedCount,
+                selectedCount: selectionController.selectedCount,
                 onHome: () {
                   controller.openDirectory(
                     PathUtils.getHomeDirectory(),
                   );
                 },
                 onUp: () {
-                  final parent =
-                      state.directory?.parentPath;
+                  final parent = state.directory?.parentPath;
 
-                  if (parent != null &&
-                      parent.isNotEmpty) {
+                  if (parent != null && parent.isNotEmpty) {
                     controller.openDirectory(parent);
                   }
                 },
                 onRefresh: () {
-                  final path =
-                      state.directory?.path;
+                  final path = state.directory?.path;
 
                   if (path != null) {
                     controller.openDirectory(path);
@@ -151,8 +152,7 @@ class _ExplorerPageState extends State<ExplorerPage> {
                   builder: (context) {
                     if (state.isLoading) {
                       return const Center(
-                        child:
-                            CircularProgressIndicator(),
+                        child: CircularProgressIndicator(),
                       );
                     }
 
@@ -164,9 +164,7 @@ class _ExplorerPageState extends State<ExplorerPage> {
                       );
                     }
 
-                    final items =
-                        state.directory?.items ??
-                        <FileEntity>[];
+                    final items = state.directory?.items ?? <FileEntity>[];
 
                     if (items.isEmpty) {
                       return const Center(
@@ -178,17 +176,13 @@ class _ExplorerPageState extends State<ExplorerPage> {
 
                     return ListView.builder(
                       itemCount: items.length,
-                      itemBuilder:
-                          (context, index) {
-                        final item =
-                            items[index];
+                      itemBuilder: (context, index) {
+                        final item = items[index];
 
                         if (item.isDirectory) {
                           return FolderTile(
                             folder: item,
-                            selected:
-                                selectionController
-                                    .isSelected(
+                            selected: selectionController.isSelected(
                               item.path,
                             ),
                             onTap: () {
@@ -201,9 +195,7 @@ class _ExplorerPageState extends State<ExplorerPage> {
 
                         return FileTile(
                           file: item,
-                          selected:
-                              selectionController
-                                  .isSelected(
+                          selected: selectionController.isSelected(
                             item.path,
                           ),
                           onTap: () {
