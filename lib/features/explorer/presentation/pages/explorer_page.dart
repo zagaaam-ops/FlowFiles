@@ -2,10 +2,15 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import '../../../../app/di/service_locator.dart';
+import '../../../../core/services/file_opener_service.dart';
 import '../../../../core/utils/path_utils.dart';
 import '../../domain/entities/file_entity.dart';
+import '../../domain/usecases/delete_files_usecase.dart';
+import '../controllers/clipboard_controller.dart';
+import '../state/clipboard_state.dart';
 import '../controllers/explorer_controller.dart';
 import '../controllers/selection_controller.dart';
+import '../widgets/explorer_context_menu.dart';
 import '../widgets/explorer_toolbar.dart';
 import '../widgets/file_tile.dart';
 import '../widgets/folder_tile.dart';
@@ -15,10 +20,16 @@ class ExplorerPage extends StatefulWidget {
     super.key,
     this.controller,
     this.selectionController,
+    this.deleteFilesUseCase,
+    this.clipboardController,
+    this.fileOpenerService,
   });
 
   final ExplorerController? controller;
   final SelectionController? selectionController;
+  final DeleteFilesUseCase? deleteFilesUseCase;
+  final ClipboardController? clipboardController;
+  final FileOpenerService? fileOpenerService;
 
   @override
   State<ExplorerPage> createState() => _ExplorerPageState();
@@ -27,6 +38,9 @@ class ExplorerPage extends StatefulWidget {
 class _ExplorerPageState extends State<ExplorerPage> {
   late final ExplorerController controller;
   late final SelectionController selectionController;
+  late final DeleteFilesUseCase deleteFilesUseCase;
+  late final ClipboardController clipboardController;
+  late final FileOpenerService fileOpenerService;
 
   final FocusNode _focusNode = FocusNode();
 
@@ -37,6 +51,14 @@ class _ExplorerPageState extends State<ExplorerPage> {
     controller = widget.controller ?? ServiceLocator.explorerController;
     selectionController =
         widget.selectionController ?? ServiceLocator.selectionController;
+
+    deleteFilesUseCase =
+        widget.deleteFilesUseCase ?? ServiceLocator.deleteFilesUseCase;
+    clipboardController =
+        widget.clipboardController ?? ServiceLocator.clipboardController;
+
+    fileOpenerService =
+        widget.fileOpenerService ?? ServiceLocator.fileOpenerService;
 
     controller.addListener(_refresh);
     selectionController.addListener(_refresh);
@@ -68,14 +90,159 @@ class _ExplorerPageState extends State<ExplorerPage> {
     super.dispose();
   }
 
-  /// Handles mouse click / touch.
-  void _handleItemTap(String path) {
-    final bool isCtrlPressed = HardwareKeyboard.instance.isControlPressed;
+  Future<void> _openFile(String path) async {
+    try {
+      await fileOpenerService.open(path);
+    } catch (e) {
+      if (!mounted) {
+        return;
+      }
 
-    if (isCtrlPressed) {
-      selectionController.toggleSelection(path);
-    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Unable to open file: $e'),
+        ),
+      );
+    }
+  }
+
+  Future<void> _showContextMenu(
+    BuildContext context,
+    String path,
+    Offset position,
+  ) async {
+    if (!selectionController.isSelected(path)) {
       selectionController.selectOnly(path);
+    }
+
+    final action = await ExplorerContextMenu.show(
+      context,
+      position,
+    );
+
+    if (!mounted || action == null) {
+      return;
+    }
+
+    switch (action) {
+      case ExplorerMenuAction.open:
+        break;
+      case ExplorerMenuAction.rename:
+        break;
+      case ExplorerMenuAction.copy:
+        clipboardController.copy(
+          selectionController.state.selectedPaths.toList(),
+        );
+        break;
+      case ExplorerMenuAction.cut:
+        clipboardController.cut(
+          selectionController.state.selectedPaths.toList(),
+        );
+        break;
+      case ExplorerMenuAction.paste:
+        await _pasteClipboard();
+        break;
+      case ExplorerMenuAction.delete:
+        await _deleteSelectedItems();
+        break;
+      case ExplorerMenuAction.properties:
+        break;
+    }
+  }
+
+  Future<void> _pasteClipboard() async {
+    final clipboard = clipboardController.state;
+
+    if (!clipboard.hasData) {
+      return;
+    }
+
+    final destinationPath = controller.state.directory?.path;
+
+    if (destinationPath == null || destinationPath.isEmpty) {
+      return;
+    }
+
+    final paths = List<String>.from(clipboard.paths);
+
+    if (clipboard.operation == ClipboardOperation.copy) {
+      await ServiceLocator.copyFilesUseCase(
+        sourcePaths: paths,
+        destinationPath: destinationPath,
+      );
+    } else if (clipboard.operation == ClipboardOperation.cut) {
+      await ServiceLocator.moveFilesUseCase(
+        sourcePaths: paths,
+        destinationPath: destinationPath,
+      );
+
+      clipboardController.clear();
+    }
+
+    if (!mounted) {
+      return;
+    }
+
+    selectionController.clearSelection();
+
+    await controller.openDirectory(destinationPath);
+  }
+
+  Future<void> _deleteSelectedItems() async {
+    final paths = selectionController.state.selectedPaths.toList();
+
+    if (paths.isEmpty) {
+      return;
+    }
+
+    final confirmed = await showDialog<bool>(
+      context: context,
+      builder: (dialogContext) {
+        final count = paths.length;
+
+        return AlertDialog(
+          title: const Text('Delete items?'),
+          content: Text(
+            count == 1
+                ? 'Are you sure you want to delete the selected item?'
+                : 'Are you sure you want to delete $count selected items?',
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(dialogContext).pop(false);
+              },
+              child: const Text('Cancel'),
+            ),
+            FilledButton(
+              onPressed: () {
+                Navigator.of(dialogContext).pop(true);
+              },
+              child: const Text('Delete'),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (!mounted || confirmed != true) {
+      return;
+    }
+
+    await deleteFilesUseCase(
+      paths: paths,
+    );
+
+    if (!mounted) {
+      return;
+    }
+
+    selectionController.clearSelection();
+
+    final currentPath = controller.state.directory?.path;
+
+    if (currentPath != null && currentPath.isNotEmpty) {
+      await controller.openDirectory(currentPath);
     }
   }
 
@@ -186,8 +353,13 @@ class _ExplorerPageState extends State<ExplorerPage> {
                               item.path,
                             ),
                             onTap: () {
-                              _handleItemTap(
+                              controller.openDirectory(item.path);
+                            },
+                            onSecondaryTapDown: (details) {
+                              _showContextMenu(
+                                context,
                                 item.path,
+                                details.globalPosition,
                               );
                             },
                           );
@@ -199,8 +371,13 @@ class _ExplorerPageState extends State<ExplorerPage> {
                             item.path,
                           ),
                           onTap: () {
-                            _handleItemTap(
+                            _openFile(item.path);
+                          },
+                          onSecondaryTapDown: (details) {
+                            _showContextMenu(
+                              context,
                               item.path,
+                              details.globalPosition,
                             );
                           },
                         );

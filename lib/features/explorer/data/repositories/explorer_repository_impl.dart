@@ -60,23 +60,117 @@ class ExplorerRepositoryImpl implements ExplorerRepository {
   }
 
   @override
-  Future<void> moveFiles({
+  Future<void> deleteFiles({
+    required List<String> paths,
+  }) async {
+    for (final path in paths) {
+      final entity = FileSystemEntity.typeSync(path);
+
+      if (entity == FileSystemEntityType.file) {
+        final file = File(path);
+
+        if (await file.exists()) {
+          await file.delete();
+        }
+      } else if (entity == FileSystemEntityType.directory) {
+        final directory = Directory(path);
+
+        if (await directory.exists()) {
+          await directory.delete(recursive: true);
+        }
+      }
+    }
+  }
+
+  @override
+  Future<void> copyFiles({
     required List<String> sourcePaths,
     required String destinationPath,
   }) async {
     for (final sourcePath in sourcePaths) {
-      final source = File(sourcePath);
-
-      if (!await source.exists()) {
-        continue;
-      }
+      final type = await FileSystemEntity.type(
+        sourcePath,
+        followLinks: false,
+      );
 
       final destination = p.join(
         destinationPath,
         p.basename(sourcePath),
       );
 
-      await source.rename(destination);
+      if (type == FileSystemEntityType.file) {
+        final source = File(sourcePath);
+
+        if (await source.exists()) {
+          await source.copy(destination);
+        }
+      } else if (type == FileSystemEntityType.directory) {
+        final source = Directory(sourcePath);
+
+        if (await source.exists()) {
+          await _copyDirectory(
+            source,
+            Directory(destination),
+          );
+        }
+      }
+    }
+  }
+
+  Future<void> _copyDirectory(
+    Directory source,
+    Directory destination,
+  ) async {
+    await destination.create(recursive: true);
+
+    await for (final entity in source.list(
+      followLinks: false,
+    )) {
+      final targetPath = p.join(
+        destination.path,
+        p.basename(entity.path),
+      );
+
+      if (entity is File) {
+        await entity.copy(targetPath);
+      } else if (entity is Directory) {
+        await _copyDirectory(
+          entity,
+          Directory(targetPath),
+        );
+      }
+    }
+  }
+
+  @override
+  Future<void> moveFiles({
+    required List<String> sourcePaths,
+    required String destinationPath,
+  }) async {
+    for (final sourcePath in sourcePaths) {
+      final type = await FileSystemEntity.type(
+        sourcePath,
+        followLinks: false,
+      );
+
+      final destination = p.join(
+        destinationPath,
+        p.basename(sourcePath),
+      );
+
+      if (type == FileSystemEntityType.file) {
+        final source = File(sourcePath);
+
+        if (await source.exists()) {
+          await source.rename(destination);
+        }
+      } else if (type == FileSystemEntityType.directory) {
+        final source = Directory(sourcePath);
+
+        if (await source.exists()) {
+          await source.rename(destination);
+        }
+      }
     }
   }
 }

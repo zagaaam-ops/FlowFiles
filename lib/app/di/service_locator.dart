@@ -1,6 +1,11 @@
+import '../../core/services/file_opener_service.dart';
 import '../../features/explorer/data/datasources/local_file_system_data_source.dart';
 import '../../features/explorer/data/repositories/explorer_repository_impl.dart';
+import '../../features/explorer/domain/usecases/copy_files_usecase.dart';
+import '../../features/explorer/domain/usecases/delete_files_usecase.dart';
+import '../../features/explorer/domain/usecases/move_files_usecase.dart';
 import '../../features/explorer/domain/usecases/load_directory_usecase.dart';
+import '../../features/explorer/presentation/controllers/clipboard_controller.dart';
 import '../../features/explorer/presentation/controllers/explorer_controller.dart';
 import '../../features/explorer/presentation/controllers/selection_controller.dart';
 
@@ -11,6 +16,8 @@ import '../../features/explorer/presentation/controllers/selection_controller.da
 class ServiceLocator {
   ServiceLocator._();
 
+  static const FileOpenerService fileOpenerService = FileOpenerService();
+
   static final LocalFileSystemDataSource _dataSource =
       LocalFileSystemDataSource();
 
@@ -20,9 +27,19 @@ class ServiceLocator {
   static final LoadDirectoryUseCase _loadDirectoryUseCase =
       LoadDirectoryUseCase(_repository);
 
+  static final CopyFilesUseCase copyFilesUseCase =
+      CopyFilesUseCase(_repository);
+
+  static final DeleteFilesUseCase deleteFilesUseCase =
+      DeleteFilesUseCase(_repository);
+
+  static final MoveFilesUseCase moveFilesUseCase =
+      MoveFilesUseCase(_repository);
+
   static final ExplorerController explorerController =
       ExplorerController(_loadDirectoryUseCase);
 
-  static final SelectionController selectionController =
-      SelectionController();
+  static final SelectionController selectionController = SelectionController();
+
+  static final ClipboardController clipboardController = ClipboardController();
 }

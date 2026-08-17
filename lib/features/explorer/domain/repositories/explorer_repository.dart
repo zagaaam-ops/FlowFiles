@@ -9,6 +9,15 @@ abstract class ExplorerRepository {
 
   Future<bool> directoryExists(String path);
 
+  Future<void> deleteFiles({
+    required List<String> paths,
+  });
+
+  Future<void> copyFiles({
+    required List<String> sourcePaths,
+    required String destinationPath,
+  });
+
   Future<void> moveFiles({
     required List<String> sourcePaths,
     required String destinationPath,
