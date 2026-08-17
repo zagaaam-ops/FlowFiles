@@ -9,6 +9,7 @@ class FileTile extends StatelessWidget {
     required this.file,
     required this.selected,
     this.onTap,
+    this.onDoubleTap,
     this.onSecondaryTapDown,
   });
 
@@ -16,6 +17,7 @@ class FileTile extends StatelessWidget {
   final bool selected;
 
   final VoidCallback? onTap;
+  final VoidCallback? onDoubleTap;
   final GestureTapDownCallback? onSecondaryTapDown;
 
   @override
@@ -23,6 +25,8 @@ class FileTile extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return GestureDetector(
+      onTap: onTap,
+      onDoubleTap: onDoubleTap,
       onSecondaryTapDown: onSecondaryTapDown,
       child: Card(
         margin: const EdgeInsets.symmetric(
@@ -47,7 +51,6 @@ class FileTile extends StatelessWidget {
                   color: colorScheme.primary,
                 )
               : const Icon(Icons.chevron_right),
-          onTap: onTap,
         ),
       ),
     );

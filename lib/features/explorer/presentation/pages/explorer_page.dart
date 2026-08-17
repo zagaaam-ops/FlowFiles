@@ -457,6 +457,11 @@ class _ExplorerPageState extends State<ExplorerPage> {
                               item.path,
                             ),
                             onTap: () {
+                              selectionController.selectOnly(
+                                item.path,
+                              );
+                            },
+                            onDoubleTap: () {
                               controller.openDirectory(item.path);
                             },
                             onSecondaryTapDown: (details) {
@@ -475,6 +480,11 @@ class _ExplorerPageState extends State<ExplorerPage> {
                             item.path,
                           ),
                           onTap: () {
+                            selectionController.selectOnly(
+                              item.path,
+                            );
+                          },
+                          onDoubleTap: () {
                             _openFile(item.path);
                           },
                           onSecondaryTapDown: (details) {

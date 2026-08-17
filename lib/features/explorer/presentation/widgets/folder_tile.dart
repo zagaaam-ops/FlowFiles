@@ -8,6 +8,7 @@ class FolderTile extends StatelessWidget {
     required this.folder,
     required this.selected,
     this.onTap,
+    this.onDoubleTap,
     this.onSecondaryTapDown,
   });
 
@@ -15,6 +16,7 @@ class FolderTile extends StatelessWidget {
   final bool selected;
 
   final VoidCallback? onTap;
+  final VoidCallback? onDoubleTap;
   final GestureTapDownCallback? onSecondaryTapDown;
 
   @override
@@ -22,6 +24,8 @@ class FolderTile extends StatelessWidget {
     final colorScheme = Theme.of(context).colorScheme;
 
     return GestureDetector(
+      onTap: onTap,
+      onDoubleTap: onDoubleTap,
       onSecondaryTapDown: onSecondaryTapDown,
       child: Card(
         margin: const EdgeInsets.symmetric(
@@ -44,7 +48,6 @@ class FolderTile extends StatelessWidget {
                   color: colorScheme.primary,
                 )
               : const Icon(Icons.chevron_right),
-          onTap: onTap,
         ),
       ),
     );
