@@ -22,4 +22,9 @@ abstract class ExplorerRepository {
     required List<String> sourcePaths,
     required String destinationPath,
   });
+
+  Future<void> renameFile({
+    required String sourcePath,
+    required String newName,
+  });
 }

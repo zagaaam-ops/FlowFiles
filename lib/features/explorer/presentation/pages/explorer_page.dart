@@ -6,6 +6,7 @@ import '../../../../core/services/file_opener_service.dart';
 import '../../../../core/utils/path_utils.dart';
 import '../../domain/entities/file_entity.dart';
 import '../../domain/usecases/delete_files_usecase.dart';
+import '../../domain/usecases/rename_file_usecase.dart';
 import '../controllers/clipboard_controller.dart';
 import '../state/clipboard_state.dart';
 import '../controllers/explorer_controller.dart';
@@ -21,6 +22,7 @@ class ExplorerPage extends StatefulWidget {
     this.controller,
     this.selectionController,
     this.deleteFilesUseCase,
+    this.renameFileUseCase,
     this.clipboardController,
     this.fileOpenerService,
   });
@@ -28,6 +30,7 @@ class ExplorerPage extends StatefulWidget {
   final ExplorerController? controller;
   final SelectionController? selectionController;
   final DeleteFilesUseCase? deleteFilesUseCase;
+  final RenameFileUseCase? renameFileUseCase;
   final ClipboardController? clipboardController;
   final FileOpenerService? fileOpenerService;
 
@@ -39,6 +42,7 @@ class _ExplorerPageState extends State<ExplorerPage> {
   late final ExplorerController controller;
   late final SelectionController selectionController;
   late final DeleteFilesUseCase deleteFilesUseCase;
+  late final RenameFileUseCase renameFileUseCase;
   late final ClipboardController clipboardController;
   late final FileOpenerService fileOpenerService;
 
@@ -54,6 +58,10 @@ class _ExplorerPageState extends State<ExplorerPage> {
 
     deleteFilesUseCase =
         widget.deleteFilesUseCase ?? ServiceLocator.deleteFilesUseCase;
+
+    renameFileUseCase =
+        widget.renameFileUseCase ?? ServiceLocator.renameFileUseCase;
+
     clipboardController =
         widget.clipboardController ?? ServiceLocator.clipboardController;
 
@@ -128,6 +136,7 @@ class _ExplorerPageState extends State<ExplorerPage> {
       case ExplorerMenuAction.open:
         break;
       case ExplorerMenuAction.rename:
+        await _renameSelectedItem();
         break;
       case ExplorerMenuAction.copy:
         clipboardController.copy(
@@ -186,6 +195,101 @@ class _ExplorerPageState extends State<ExplorerPage> {
     selectionController.clearSelection();
 
     await controller.openDirectory(destinationPath);
+  }
+
+  Future<void> _renameSelectedItem() async {
+    final paths = selectionController.state.selectedPaths.toList();
+
+    if (paths.length != 1) {
+      return;
+    }
+
+    final sourcePath = paths.first;
+    final currentName = sourcePath.split('/').last;
+
+    final textController = TextEditingController(
+      text: currentName,
+    );
+
+    final newName = await showDialog<String>(
+      context: context,
+      builder: (dialogContext) {
+        return AlertDialog(
+          title: const Text('Rename'),
+          content: TextField(
+            controller: textController,
+            autofocus: true,
+            decoration: const InputDecoration(
+              labelText: 'New name',
+            ),
+            onSubmitted: (value) {
+              final trimmed = value.trim();
+
+              if (trimmed.isNotEmpty) {
+                Navigator.of(dialogContext).pop(trimmed);
+              }
+            },
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(dialogContext).pop();
+              },
+              child: const Text('Cancel'),
+            ),
+            FilledButton(
+              onPressed: () {
+                final trimmed = textController.text.trim();
+
+                if (trimmed.isNotEmpty) {
+                  Navigator.of(dialogContext).pop(trimmed);
+                }
+              },
+              child: const Text('Rename'),
+            ),
+          ],
+        );
+      },
+    );
+
+    textController.dispose();
+
+    if (!mounted || newName == null || newName.isEmpty) {
+      return;
+    }
+
+    if (newName == currentName) {
+      return;
+    }
+
+    try {
+      await renameFileUseCase(
+        sourcePath: sourcePath,
+        newName: newName,
+      );
+
+      if (!mounted) {
+        return;
+      }
+
+      selectionController.clearSelection();
+
+      final directoryPath = controller.state.directory?.path;
+
+      if (directoryPath != null && directoryPath.isNotEmpty) {
+        await controller.openDirectory(directoryPath);
+      }
+    } catch (e) {
+      if (!mounted) {
+        return;
+      }
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Unable to rename item: $e'),
+        ),
+      );
+    }
   }
 
   Future<void> _deleteSelectedItems() async {

@@ -143,6 +143,41 @@ class ExplorerRepositoryImpl implements ExplorerRepository {
   }
 
   @override
+  Future<void> renameFile({
+    required String sourcePath,
+    required String newName,
+  }) async {
+    final type = await FileSystemEntity.type(
+      sourcePath,
+      followLinks: false,
+    );
+
+    if (type == FileSystemEntityType.file) {
+      final source = File(sourcePath);
+
+      if (await source.exists()) {
+        final destination = p.join(
+          p.dirname(sourcePath),
+          newName,
+        );
+
+        await source.rename(destination);
+      }
+    } else if (type == FileSystemEntityType.directory) {
+      final source = Directory(sourcePath);
+
+      if (await source.exists()) {
+        final destination = p.join(
+          p.dirname(sourcePath),
+          newName,
+        );
+
+        await source.rename(destination);
+      }
+    }
+  }
+
+  @override
   Future<void> moveFiles({
     required List<String> sourcePaths,
     required String destinationPath,
