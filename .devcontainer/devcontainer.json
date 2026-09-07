@@ -1,7 +1,6 @@
 {
   "name": "FlowFiles Flutter Development",
-
-  "image": "mcr.microsoft.com/devcontainers/base:ubuntu",
+  "image": "mcr.microsoft.com/devcontainers/base:ubuntu-24.04",
 
   "features": {
     "ghcr.io/devcontainers/features/git:1": {}
@@ -16,5 +15,10 @@
         "Dart-Code.dart-code"
       ]
     }
+  },
+
+  "remoteEnv": {
+    "CC": "/usr/bin/gcc",
+    "CXX": "/usr/bin/g++"
   }
 }
